@@ -5,6 +5,7 @@ import jakarta.jms.Message;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
+import rs.wepublishlaws.buildingblocks.handler.exceptions.MessageNullException;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -21,9 +22,16 @@ public class ActiveMqProducer implements IProducer {
 
     public <T, R> R sendAndReceive(String destination, T request, Class<R> responseType) {
         Message responseMessage = jmsTemplate.sendAndReceive(destination, session -> {
-            Message message = Objects.requireNonNull(jmsTemplate.getMessageConverter()).toMessage(request, session);
-            message.setJMSCorrelationID(UUID.randomUUID().toString());
-            return message;
+            try {
+                Message message = jmsTemplate.getMessageConverter().toMessage(request, session);
+                message.setJMSCorrelationID(UUID.randomUUID().toString());
+                return message;
+            } catch (NullPointerException e){
+                throw new MessageNullException("Poruka ne sme biti null");
+            }
+//            Message message = Objects.requireNonNull(jmsTemplate.getMessageConverter()).toMessage(request, session);
+//            message.setJMSCorrelationID(UUID.randomUUID().toString());
+//            return message;
         });
 
         if (responseMessage != null) {
