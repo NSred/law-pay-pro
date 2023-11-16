@@ -12,7 +12,7 @@ public class TokenGenerator {
     private static final String AUDIENCE_WEB = "web";
     @Value("payment-service-provider")
     private String APP_NAME;
-    @Value("secret_kkp")
+    @Value("somesecret")
     public String SECRET;
     @Value("1800000")
     private int EXPIRES_IN;

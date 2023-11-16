@@ -71,7 +71,7 @@ public class WebSecurityConfig {
 
         // Configure request authorization
         http.authorizeHttpRequests(authz -> authz
-                .requestMatchers("/api/account/login").permitAll()
+                .requestMatchers("/api/users/login").permitAll()
                 // Uncomment and configure other request matchers as needed
                 // .requestMatchers(HttpMethod.POST, "/api/account/host").permitAll()
                 // .requestMatchers(HttpMethod.PUT, "/api/account/**").hasAnyAuthority("Host", "Guest")
