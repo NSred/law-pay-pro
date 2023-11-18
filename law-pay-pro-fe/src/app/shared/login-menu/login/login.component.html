@@ -1,0 +1,38 @@
+<div class="login-wrapper">
+  <div class="container">
+    <div class="photo-wrapper">
+      <img
+        class="photo"
+        ngSrc="../../../../assets/images/login-logo.jpg"
+        height="300"
+        width="400"
+        alt="logo"
+        priority
+      />
+    </div>
+    <div class="content">
+      <h2 class="headline">User login</h2>
+      <div class="input-fields">
+        <app-input-field
+          class="field"
+          [control]="loginForm.controls.username"
+          [placeholder]="'Username'"
+          [errors]="{required: 'This field is required'}"
+        />
+        <app-input-field
+          class="field"
+          [control]="loginForm.controls.password"
+          [placeholder]="'Password'"
+          [errors]="{required: 'This field is required'}"
+        />
+      </div>
+      <div class="login-button">
+        <app-button
+          class="field"
+          [info]="'Sign in'"
+          (onClick)="login()"
+        />
+      </div>
+    </div>
+  </div>
+</div>

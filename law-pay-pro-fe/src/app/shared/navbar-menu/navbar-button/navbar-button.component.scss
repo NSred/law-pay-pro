@@ -1,0 +1,51 @@
+@import "../../../sass/variables";
+
+.nav-link {
+  height: 115px;
+  margin: 1rem;
+  padding: 1rem 0.5rem 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-color);
+  background: transparent;
+  border: none;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  opacity: 0.75;
+  &::before {
+    transition: all 0.2s ease-in-out;
+    height: 4px;
+    content: "";
+    position: absolute;
+    background-color: var(--selection-color);
+    color: var(--selection-color);
+    bottom: 0;
+    left: -1px;
+    width: 0;
+  }
+  &:hover {
+    cursor: pointer;
+    background: var(--primary-color);
+    opacity: 1;
+    color: var(--selection-color);
+    &::before {
+      width: calc(100% + 1px);
+    }
+  }
+}
+
+.nav-link:focus {
+  outline: none;
+  color: var(--selection-color);
+  &::before {
+    width: calc(100% + 1px);
+  }
+}
+
+.icon {
+  width: 30px;
+  font-size: 20px;
+}

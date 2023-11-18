@@ -1,0 +1,65 @@
+@import "../../../sass/variables";
+
+.login-wrapper {
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  height: 100%;
+}
+
+.container {
+  display: grid;
+  //grid-template-columns: repeat(2, auto);
+  grid-template-columns: 0.8fr 0.7fr;
+  border-radius: 20px;
+  background-color: var(--primary-color);
+  height: 60dvh;
+  width: 100dvh;
+}
+
+.photo-wrapper {
+  background-color: #222529;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.photo {
+  align-items: center;
+  justify-content: center;
+  border-radius: 100px;
+}
+
+.content {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  flex-direction: column;
+  padding: 2rem;
+  gap: .5rem;
+}
+
+.headline {
+  font-weight: bolder;
+  color: var(--selection-color);
+  padding-bottom: 2rem;
+}
+
+.input-fields {
+  display: flex;
+  flex-direction: column;
+}
+
+.field {
+  padding: 1rem;
+  width: 20rem;
+}
+
+.login-button {
+  padding-top: 2rem;
+  width: 18rem;
+}
+

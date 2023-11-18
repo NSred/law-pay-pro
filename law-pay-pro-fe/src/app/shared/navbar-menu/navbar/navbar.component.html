@@ -1,0 +1,21 @@
+<mat-toolbar class="container-nav" color="primary">
+  <div class="logo" (click)="goToHome()">
+    <div>
+      <img
+        ngSrc="../../../../assets/images/law.png"
+        height="70"
+        width="70"
+        alt="logo"
+        priority
+      />
+    </div>
+    <div>
+      <label class="logo-label">LawPayPro</label>
+    </div>
+  </div>
+  <div class="navbar-elements">
+    <app-navbar-button [iconName]="'group'">Home</app-navbar-button>
+    <app-navbar-button [iconName]="'group'">Offers</app-navbar-button>
+    <app-navbar-button [iconName]="'group'" (click)="goToLogin()">Login</app-navbar-button>
+  </div>
+</mat-toolbar>

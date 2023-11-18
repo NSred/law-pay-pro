@@ -1,0 +1,42 @@
+version: '3.8'
+name: law-pay-pro
+services:
+  psp_db:
+    image: postgres
+    container_name: psp-db
+    restart: always
+    ports:
+      - "5401:5432"
+    environment:
+      POSTGRES_DB: psp-db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: user
+    volumes:
+      - psp-data:/var/lib/postgresql/data
+    networks:
+      psp-net:
+  psp-activemq:
+    image: rmohr/activemq
+    ports:
+      - "8161:8161"
+      - "61616:61616"
+    environment:
+      - ACTIVEMQ_ADMIN_LOGIN=admin
+      - ACTIVEMQ_ADMIN_PASSWORD=admin
+      - ACTIVEMQ_WRITE_LOGIN=writer
+      - ACTIVEMQ_WRITE_PASSWORD=writer
+      - ACTIVEMQ_READ_LOGIN=reader
+      - ACTIVEMQ_READ_PASSWORD=reader
+    volumes:
+      - psp-activemq-data:/data/activemq
+      - psp-activemq-logs:/var/log/activemq
+networks:
+  psp-net:
+    driver: bridge
+volumes:
+  psp-data:
+    driver: local
+  psp-activemq-data:
+    driver: local
+  psp-activemq-logs:
+    driver: local

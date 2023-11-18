@@ -22,7 +22,7 @@ import rs.wepublishlaws.paymentserviceprovider.service.IUserService;
 
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired

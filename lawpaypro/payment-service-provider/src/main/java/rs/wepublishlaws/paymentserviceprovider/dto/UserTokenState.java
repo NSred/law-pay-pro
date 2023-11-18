@@ -1,5 +1,10 @@
 package rs.wepublishlaws.paymentserviceprovider.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class UserTokenState {
 
     private String accessToken;
@@ -14,21 +19,4 @@ public class UserTokenState {
         this.accessToken = accessToken;
         this.expiresIn = expiresIn;
     }
-
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    public Long getExpiresIn() {
-        return expiresIn;
-    }
-
-    public void setExpiresIn(Long expiresIn) {
-        this.expiresIn = expiresIn;
-    }
-
 }

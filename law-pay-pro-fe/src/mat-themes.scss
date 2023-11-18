@@ -1,0 +1,82 @@
+@use "@angular/material" as mat;
+
+$primary-dark-blue: (
+  50: #e4e7ea,
+  100: #bcc3c9,
+  200: #8f9ca6,
+  300: #222929,
+  400: #222629,
+  500: #222529,
+  600: #222329,
+  700: #222529,
+  800: #232229,
+  900: #222529,
+  A100: #62acff,
+  A200: #2f91ff,
+  A400: #0077fb,
+  A700: #006be1,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  ),
+);
+$secondary-dark-blue: (
+  50: #e0fdef,
+  100: #2a83f8,
+  200: #2a43f8,
+  300: #2a43f8,
+  400: #2a43f8,
+  500: #2a43f8,
+  600: #2a43f8,
+  700: #2a43f8,
+  800: #2a43f8,
+  900: #2a43f8,
+  A100: #62acff,
+  A200: #2f91ff,
+  A400: #2a43f8,
+  A700: #2a43f8,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  ),
+);
+
+$dark-blue-primary: mat.define-palette($primary-dark-blue, 500);
+$dark-blue-accent: mat.define-palette($secondary-dark-blue, 500);
+$my-warn: mat.define-palette(mat.$red-palette, 900);
+
+$dark-blue-theme: mat.define-dark-theme(
+    (
+      color: (
+        primary: $dark-blue-primary,
+        accent: $dark-blue-accent,
+        warn: $my-warn,
+      ),
+      typography: mat.define-typography-config(),
+      density: 0,
+    )
+);
