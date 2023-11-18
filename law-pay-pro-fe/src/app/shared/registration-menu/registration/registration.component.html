@@ -21,18 +21,36 @@
           priority
         />
       </div>
-      <h2 class="headline">User login</h2>
+      <h2 class="headline">Registration</h2>
       <div class="input-fields">
         <app-input-field
           class="field"
-          [control]="loginForm.controls.username"
+          [control]="registrationForm.controls.name"
+          [placeholder]="'First Name'"
+          [errors]="{required: 'This field is required'}"
+        />
+        <app-input-field
+          class="field"
+          [control]="registrationForm.controls.surname"
+          [placeholder]="'Last Name'"
+          [errors]="{required: 'This field is required'}"
+        />
+        <app-input-field
+          class="field"
+          [control]="registrationForm.controls.username"
           [placeholder]="'Username'"
           [errors]="{required: 'This field is required'}"
         />
         <app-input-field
           class="field"
+          [control]="registrationForm.controls.email"
+          [placeholder]="'Email'"
+          [errors]="{required: 'This field is required', email: 'Not a valid email address'}"
+        />
+        <app-input-field
+          class="field"
           [type]="'password'"
-          [control]="loginForm.controls.password"
+          [control]="registrationForm.controls.password"
           [placeholder]="'Password'"
           [errors]="{required: 'This field is required'}"
         />
@@ -40,13 +58,10 @@
       <div class="login-button">
         <app-button
           class="field"
-          [info]="'Sign in'"
-          (onClick)="login()"
+          [info]="'Register'"
+          (click)="register()"
         />
       </div>
-      <span class="register-sentence">Don't have an account?&nbsp;&nbsp;
-        <b class="register-label" (click)="goToRegistrationPage()">Register now!</b>
-      </span>
     </div>
   </div>
 </div>

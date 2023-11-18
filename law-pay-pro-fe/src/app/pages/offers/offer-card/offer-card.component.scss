@@ -1,0 +1,37 @@
+@import "../../../sass/variables";
+
+.card-wrapper {
+  background-color: var(--secondary);
+  color: var(--text-color);
+  display: flex;
+  gap: 0.5rem;
+  flex-direction: column;
+  padding: 0.5rem;
+  border-radius: 1rem;
+  min-width: 16.5rem;
+}
+
+.name {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 0.5rem;
+  font-size: 20px;
+}
+
+.price {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0.5rem;
+  font-size: 14px;
+  gap: 0.5rem;
+  color: var(--grey-text-color);
+  margin-right: auto;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}

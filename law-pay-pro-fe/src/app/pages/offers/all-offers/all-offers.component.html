@@ -1,0 +1,14 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="header">
+      <h2>Explore offers</h2>
+    </div>
+    <div class="offers">
+      <div class="offer-card" *ngFor="let offer of offers">
+        <app-offer-card
+          [offer]="offer"
+        />
+      </div>
+    </div>
+  </div>
+</div>

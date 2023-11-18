@@ -1,6 +1,7 @@
 <div class="input-wrapper">
   <input
     class="input-field"
+    [formControl]="control"
     [placeholder]="placeholder"
     [readOnly]="isDisabled"
     [type]="type"
@@ -11,6 +12,9 @@
     </ng-container>
     <ng-container *ngIf="control.hasError('pattern')">
       <app-input-error [error]="errors.pattern" />
+    </ng-container>
+    <ng-container *ngIf="control.hasError('email')">
+      <app-input-error [error]="errors.email" />
     </ng-container>
   </div>
 </div>

@@ -1,0 +1,15 @@
+<div class="card-wrapper">
+  <div class="name">
+    {{offer.name}}
+  </div>
+  <div class="price">
+    <span [textContent]="'Offer price: '"></span>
+    <span>{{offer.price + ' €'}}</span>
+  </div>
+  <div class="buttons">
+    <app-button
+      [info]="'Buy now'"
+      (onClick)="buy(offer)"
+    />
+  </div>
+</div>

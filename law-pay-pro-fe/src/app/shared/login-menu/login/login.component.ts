@@ -41,11 +41,16 @@ export class LoginComponent implements OnInit{
       username: this.loginForm.controls.username.value,
       password: this.loginForm.controls.password.value
     }
-    this.userService.login(request).subscribe({
-      next: res => {
-        this.router.navigate(['']).then()
-        console.log(res);
-      }
-    })
+    this.router.navigate(['']).then()
+    this.navbarState.updateNavbarVisibility(true);
+    // this.userService.login(request).subscribe({
+    //   next: res => {
+    //     this.router.navigate(['']).then()
+    //   }
+    // })
+  }
+
+  goToRegistrationPage() {
+    this.router.navigate(['registration']).then()
   }
 }

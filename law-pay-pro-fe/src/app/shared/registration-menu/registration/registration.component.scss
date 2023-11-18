@@ -14,7 +14,7 @@
   grid-template-columns: 0.8fr 0.7fr;
   border-radius: 20px;
   background-color: var(--primary-color);
-  height: 60dvh;
+  height: 80dvh;
   width: 50dvw;
 }
 
@@ -78,7 +78,7 @@
 
 @media (max-width: 1300px) {
   .container {
-    height: 65dvh; /* Increase container height if necessary */
+    height: 80dvh; /* Increase container height if necessary */
     width: 50dvw; /* Adjust the container width as needed */
     display: flex; /* Use flexbox to manage inner containers */
     flex-wrap: wrap; /* Allow items to wrap if needed */
@@ -113,6 +113,7 @@
 
   .field {
     width: 100%; /* Take full width of the parent */
+    padding: .4rem;
   }
 
   .login-button {
@@ -126,6 +127,3 @@
     padding: 0;
   }
 }
-
-
-

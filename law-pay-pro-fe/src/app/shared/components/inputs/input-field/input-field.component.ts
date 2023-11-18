@@ -1,13 +1,13 @@
 import {Component, forwardRef, Input} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR} from "@angular/forms";
+import {ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule} from "@angular/forms";
 import {InputErrorComponent} from "../input-error/input-error.component";
 import {InputError} from "../../../model/error.model";
 
 @Component({
   selector: 'app-input-field',
   standalone: true,
-  imports: [CommonModule, InputErrorComponent],
+  imports: [CommonModule, InputErrorComponent, ReactiveFormsModule],
   templateUrl: './input-field.component.html',
   styleUrl: './input-field.component.scss',
   providers: [

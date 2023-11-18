@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {LoginDto} from "../../model/login";
+import {LoginDto, RegistrationDto} from "../../model/login";
 import {Observable} from "rxjs";
 import {TokenState} from "../../model/token.state";
 
@@ -15,5 +15,9 @@ export class UserService {
 
   login(request: LoginDto): Observable<TokenState>{
     return this.httpClient.post<TokenState>(`${this.baseUrl}/login`, request, {headers: this.headers})
+  }
+
+  register(request: RegistrationDto): Observable<string>{
+    return this.httpClient.post<string>(`${this.baseUrl}/register`, request, {headers: this.headers})
   }
 }
