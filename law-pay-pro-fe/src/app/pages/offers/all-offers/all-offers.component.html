@@ -7,6 +7,7 @@
       <div class="offer-card" *ngFor="let offer of offers">
         <app-offer-card
           [offer]="offer"
+          (onBuy)="goToPaymentPage(offer)"
         />
       </div>
     </div>

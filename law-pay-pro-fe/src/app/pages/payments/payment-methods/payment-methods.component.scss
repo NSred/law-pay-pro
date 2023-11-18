@@ -24,4 +24,51 @@
 .header {
   display: flex;
   padding-bottom: 2rem;
+  width: 50%;
+}
+
+.payment-method {
+  width: 30%;
+}
+
+.radio-button-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.item {
+  width: 15dvw;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+img {
+  margin-left: auto;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.button {
+  padding-top: 2rem;
+  justify-content: flex-end;
+}
+
+@media (max-width: 1300px) {
+  .item {
+    width: 23dvw;
+  }
+
+  .button {
+    width: 18dvw;
+  }
+
+  .payment-method {
+    width: 50%;
+  }
 }

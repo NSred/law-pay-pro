@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import {Component, inject} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {offersMock} from "../model/offer";
+import {Offer, offersMock} from "../model/offer";
 import {OfferCardComponent} from "../offer-card/offer-card.component";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-all-offers',
@@ -11,5 +12,10 @@ import {OfferCardComponent} from "../offer-card/offer-card.component";
   styleUrl: './all-offers.component.scss'
 })
 export class AllOffersComponent {
+  private readonly router = inject(Router)
   offers = offersMock
+
+  goToPaymentPage(offer: Offer) {
+    this.router.navigate(['payment']).then();
+  }
 }

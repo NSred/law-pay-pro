@@ -62,8 +62,8 @@ public class UserController {
 
         // Create new user's account
         Role role = new Role();
-        role.setId(1L);
-        role.setName("User");
+        role.setId(2L);
+        role.setName("USER");
 
         User user = new User();
         user.setUsername(registrationDTO.getUsername());

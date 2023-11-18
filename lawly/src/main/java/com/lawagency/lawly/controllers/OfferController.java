@@ -28,14 +28,8 @@ public class OfferController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     //@PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Collection<OfferDTO>> findAppointments() {
+    public ResponseEntity<Collection<OfferDTO>> getOffers() {
         Collection<Offer> offers = offerService.findAll();
-//        Collection<OfferDTO> dtos = new ArrayList<>();
-        //        offers.stream().map(offer -> dtos);
-//        for(Offer offer : offers){
-//            OfferDTO dto = new OfferDTO(offer);
-//            dtos.add(dto);
-//        }
         List<OfferDTO> dtos = offers.stream()
                                      .map(OfferDTO::new)
                                         .collect(Collectors.toList());

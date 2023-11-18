@@ -1,31 +1,72 @@
 <div class="wrapper">
   <div class="container">
-    <div class="header">
-      <h2>Choose payment method</h2>
-    </div>
-    <div>
-      <mat-radio-group
-        (change)="onRadioButtonChange($event)"
-        [(ngModel)]="selectedValue"
-      >
-        <app-payment-method-card
-          [label]="'Pay with credit card'"
-          [imgPath]=""
-        />
-        <app-payment-method-card
-          [label]="'Pay with PayPal'"
-          [imgPath]=""
-        />
-        <app-payment-method-card
-          [label]="'Pay with qr code'"
-          [imgPath]=""
-        />
-        <app-payment-method-card
-          [label]="'Pay with crypto'"
-          [imgPath]=""
-        />
-
-      </mat-radio-group>
+    <div class="payment-method">
+      <div class="header">
+        <h2>Choose payment method</h2>
+      </div>
+      <div>
+        <mat-radio-group
+          (change)="onRadioButtonChange($event)"
+          [(ngModel)]="selectedValue"
+        >
+          <div class="radio-button-wrapper">
+            <div class="item">
+              <mat-radio-button [value]="paymentType.CREDIT_CARD">Pay with credit card</mat-radio-button>
+              <img
+                [ngSrc]="'../../../../assets/images/atm-card64.png'"
+                height="64"
+                width="64"
+                alt="logo"
+                priority
+              />
+            </div>
+            <div class="item">
+              <mat-radio-button [value]="paymentType.PAY_PAL">Pay with PayPal</mat-radio-button>
+              <img
+                [ngSrc]="'../../../../assets/images/paypal64.png'"
+                height="64"
+                width="64"
+                alt="logo"
+                priority
+              />
+            </div>
+            <div class="item">
+              <mat-radio-button [value]="paymentType.QR_CODE">Pay with qr code</mat-radio-button>
+              <img
+                [ngSrc]="'../../../../assets/images/qr-code64.png'"
+                height="64"
+                width="64"
+                alt="logo"
+                priority
+              />
+            </div>
+            <div class="item">
+              <mat-radio-button [value]="paymentType.CRYPTO_CURRENCY">Pay in crypto</mat-radio-button>
+              <img
+                [ngSrc]="'../../../../assets/images/bitcoin64.png'"
+                height="64"
+                width="64"
+                alt="logo"
+                priority
+              />
+            </div>
+          </div>
+        </mat-radio-group>
+        <div class="buttons">
+          <div class="button">
+            <app-button
+              [info]="'< Back'"
+              (click)="goBackToOffers()"
+            />
+          </div>
+          <div class="button">
+            <app-button
+              [info]="'Confirm payment'"
+              [disabled]="disabled"
+            />
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

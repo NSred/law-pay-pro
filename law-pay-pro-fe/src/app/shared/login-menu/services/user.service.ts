@@ -10,7 +10,7 @@ import {TokenState} from "../../model/token.state";
 export class UserService {
   constructor(private httpClient: HttpClient) {}
 
-  private readonly baseUrl: string = 'http://localhost:8081/users'/*`http://localhost:8080/api/payment-service-provider/users`*/;
+  private readonly baseUrl: string = 'http://localhost:8070/api/users'/*`http://localhost:8080/api/payment-service-provider/users`*/;
   headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
 
   login(request: LoginDto): Observable<TokenState>{
@@ -18,6 +18,7 @@ export class UserService {
   }
 
   register(request: RegistrationDto): Observable<string>{
-    return this.httpClient.post<string>(`${this.baseUrl}/register`, request, {headers: this.headers})
+    return this.httpClient.post<string>(`${this.baseUrl}/register`, request,
+      {headers: this.headers, responseType: 'text' as 'json'})
   }
 }

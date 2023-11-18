@@ -5,6 +5,8 @@ import {InputFieldComponent} from "../../components/inputs/input-field/input-fie
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {NavbarStateService} from "../../navbar-menu/state/navbar-state.service";
+import {LoginDto, RegistrationDto} from "../../model/login";
+import {UserService} from "../../login-menu/services/user.service";
 
 export interface RegistrationForm {
   name: FormControl<string>;
@@ -22,6 +24,7 @@ export interface RegistrationForm {
   styleUrl: './registration.component.scss'
 })
 export class RegistrationComponent {
+  private readonly userService = inject(UserService)
   private readonly router = inject(Router)
   private readonly navbarState = inject(NavbarStateService)
   registrationForm = new FormGroup<RegistrationForm>(<RegistrationForm>{
@@ -37,6 +40,18 @@ export class RegistrationComponent {
   }
 
   register() {
-
+    let request: RegistrationDto = {
+      name: this.registrationForm.controls.name.value,
+      surname: this.registrationForm.controls.surname.value,
+      email: this.registrationForm.controls.email.value,
+      username: this.registrationForm.controls.username.value,
+      password: this.registrationForm.controls.password.value
+    }
+    this.userService.register(request).subscribe({
+      next: _ => {
+        this.navbarState.updateNavbarVisibility(true);
+        this.router.navigate(['']).then()
+      }
+    })
   }
 }

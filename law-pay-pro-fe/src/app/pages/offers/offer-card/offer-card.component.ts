@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {Offer} from "../model/offer";
 import {ButtonComponent} from "../../../shared/components/buttons/button/button.component";
@@ -12,8 +12,9 @@ import {ButtonComponent} from "../../../shared/components/buttons/button/button.
 })
 export class OfferCardComponent {
   @Input() offer: Offer = {id: '', name: '', price: 0};
+  @Output() onBuy: EventEmitter<Offer> = new EventEmitter<Offer>();
 
   buy(offer: Offer) {
-
+    this.onBuy.emit(offer);
   }
 }
