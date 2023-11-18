@@ -7,19 +7,18 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
-@Entity(name = "users")
+@Entity(name = "merchants")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "users")
-public class User implements Serializable {
+@Table(name = "merchants")
+public class Merchant implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private Long id;
-    private String username;
-    private String password;
-    private String name;
-    private String surname;
-    private String email;
+    private String merchantId;
+    private String merchantPassword;
+    private String apiKey;
+
 }
