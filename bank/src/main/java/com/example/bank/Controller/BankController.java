@@ -30,16 +30,14 @@ public class BankController {
             if (bankService.isSameBank(cardTransactionRequestDTO.getPan())) {
                 Card card = cardService.isCardInfoCorrect(cardTransactionRequestDTO);
                 //How to gather merchantId
-                if(accountService.transferMoney(card.getAccount().getAccountId(),1L,3000.00)){
+                if(accountService.transferMoney(card.getAccount().getAccountId(),1L, cardTransactionRequestDTO.getAmount())){
                     return ResponseEntity.ok("Transaction successfull");
                 }else {
                     return ResponseEntity.badRequest().body("Not enough money");
                 }
-
-
-
             } else {
-                return ResponseEntity.badRequest().body("Card is not from the same bank.");
+                String a = bankService.sendToPCC(cardTransactionRequestDTO);
+                return ResponseEntity.ok("Card is not from the same bank it is sent to PCC");
             }
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error transferring money: " + e.getMessage());

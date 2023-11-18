@@ -5,8 +5,17 @@ public class CardTransactionRequestDTO{
         private String securityCode;
         private String cardHolderName;
         private String expirationDate;
+        private Double amount;
 
-        public String getPan() {
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
+
+    public String getPan() {
             return pan;
         }
 
