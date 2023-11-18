@@ -30,14 +30,35 @@ public class BankController {
             if (bankService.isSameBank(cardTransactionRequestDTO.getPan())) {
                 Card card = cardService.isCardInfoCorrect(cardTransactionRequestDTO);
                 //How to gather merchantId
-                if(accountService.transferMoney(card.getAccount().getAccountId(),1L, cardTransactionRequestDTO.getAmount())){
+                if(accountService.withdrawMoney(card.getAccount().getAccountId(), cardTransactionRequestDTO.getAmount())){
+                    accountService.depositMoney(1L,cardTransactionRequestDTO.getAmount());
                     return ResponseEntity.ok("Transaction successfull");
                 }else {
                     return ResponseEntity.badRequest().body("Not enough money");
                 }
             } else {
                 String a = bankService.sendToPCC(cardTransactionRequestDTO);
+                System.out.println(a);
                 return ResponseEntity.ok("Card is not from the same bank it is sent to PCC");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error transferring money: " + e.getMessage());
+        }
+    }
+    @PostMapping("/payIssuer")
+    public ResponseEntity<String> takeMoneyIssuer(@RequestBody CardTransactionRequestDTO cardTransactionRequestDTO) {
+        try {
+            if (bankService.isSameBank(cardTransactionRequestDTO.getPan())) {
+                Card card = cardService.isCardInfoCorrect(cardTransactionRequestDTO);
+                //Maybe reserve money, so there must be reserve money
+                if(accountService.withdrawMoney(card.getAccount().getAccountId(), cardTransactionRequestDTO.getAmount())){
+                    //generisi issuer id i timestamp i upisi u bazu transaksicja i vrati nazad PCC
+                    return ResponseEntity.ok("Transaction successfull");
+                }else {
+                    return ResponseEntity.badRequest().body("Not enough money");
+                }
+            } else {
+                return ResponseEntity.ok("Card is not from the same bank there was an error in PCC");
             }
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error transferring money: " + e.getMessage());

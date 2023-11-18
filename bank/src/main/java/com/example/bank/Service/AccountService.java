@@ -17,27 +17,30 @@ public class AccountService {
     }
 
     @Transactional
-    public boolean transferMoney(Long accountIssuerId, Long MerchantId, Double amount) {
+    public boolean withdrawMoney(Long accountIssuerId, Double amount) {
         Account accountIssuer = accountRepository.findById(accountIssuerId).orElse(null);
-        Account accountMerchant = accountRepository.findByMerchantMerchantId(MerchantId).orElse(null);
         if (accountIssuer != null) {
             Double currentBalance = accountIssuer.getBalance();
             if (currentBalance.compareTo(amount) >= 0) {
                 Double newBalance = currentBalance - amount;
                 accountIssuer.setBalance(newBalance);
                 accountRepository.save(accountIssuer);
+                return true;
             }
         }
-        if (accountMerchant != null) {
-            Double currentBalance = accountMerchant.getBalance();
+        return false;
+    }
+
+    @Transactional
+    public boolean depositMoney(Long accountReceiverId, Double amount) {
+        Account accountReceiver = accountRepository.findById(accountReceiverId).orElse(null);
+        if (accountReceiver != null) {
+            Double currentBalance = accountReceiver.getBalance();
             Double newBalance = currentBalance + amount;
-            System.out.println(newBalance);
-            accountMerchant.setBalance(newBalance);
-            accountRepository.save(accountMerchant);
+            accountReceiver.setBalance(newBalance);
+            accountRepository.save(accountReceiver);
             return true;
         }
-
-
         return false;
     }
 }

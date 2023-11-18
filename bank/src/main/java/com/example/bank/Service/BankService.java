@@ -20,7 +20,7 @@ public class BankService {
 */
     private final WebClient webClient;
     public BankService(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl("http://localhost:8082").build();
+        this.webClient = webClientBuilder.build();
     }
 
     public boolean isSameBank(String pan) {
@@ -40,7 +40,7 @@ public class BankService {
         System.out.println(acquirerOrderIdTS.toString());
         //napravi DTO za slanje na PCC i pogoditi nekako PCC backend rutu
         Object a = webClient.post()
-                .uri("/pcc/toIssuerBank")
+                .uri("http://localhost:8082/pcc/toIssuerBank")
                 .bodyValue("")
                 .retrieve()
                 .toBodilessEntity()
