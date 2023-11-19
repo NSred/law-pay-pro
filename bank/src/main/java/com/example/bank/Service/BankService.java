@@ -1,14 +1,12 @@
 package com.example.bank.Service;
 
-import com.example.bank.DTO.PCCRequestDTO;
-import com.example.bank.DTO.PCCResponseDTO;
+import com.example.bank.DTO.*;
+import com.example.bank.Model.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import com.example.bank.DTO.CardTransactionRequestDTO;
-import com.example.bank.DTO.IdTimestampDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.Disposable;
+import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 
@@ -26,6 +24,8 @@ public class BankService {
 
     @Value("${bank.id}")
     private String bankId;
+    @Value("${bank.success-url}")
+    private String successUrl;
 
     private final WebClient webClient;
     public BankService(WebClient.Builder webClientBuilder) {
@@ -42,37 +42,37 @@ public class BankService {
         return new IdTimestampDTO(order_id, timestamp);
     }
 
-    public String sendToPCC(CardTransactionRequestDTO cardTransactionRequestDTO) {
+    public PCCResponseDTO sendToPCC(CardTransactionRequestDTO cardTransactionRequestDTO, Transaction transaction) {
         IdTimestampDTO acquirerOrderIdTS = generateOrderId();
         //From where do I get merhcantId, merchant OrderId and timestamp paymentId
-        String accNumber = accountService.getAccountNumberMerchant(1L);
+        String accNumber = accountService.getAccountNumberMerchant(transaction.getMerchant().getId());
         PCCRequestDTO pccRequestDTO = new PCCRequestDTO(
                 cardTransactionRequestDTO.getPan(),
                 cardTransactionRequestDTO.getSecurityCode(),
                 cardTransactionRequestDTO.getCardHolderName(),
                 cardTransactionRequestDTO.getExpirationDate(),
-                cardTransactionRequestDTO.getAmount(),
+                transaction.getAmount(),
                 acquirerOrderIdTS.getId(),
                 acquirerOrderIdTS.getTimestamp(),
                 bankId,
-                "merchantOrderId",
-                LocalDateTime.now(),
-                "PaymentId",
+                transaction.getMerchantOrderId(),
+                transaction.getMerchantTimestamp(),
+                transaction.getPaymentId(),
                 accNumber
                 );
-        transactionService.insertTransactionAcquirer(pccRequestDTO,1L);
-        Object a = webClient.post()
-                .uri("http://localhost:8082/pcc/toIssuerBank")
+        transactionService.insertTransactionAcquirer(pccRequestDTO);
+        Mono<PCCResponseDTO> responseMono = webClient.post()
+                .uri("http://localhost:8062/pcc/toIssuerBank")
                 .bodyValue(pccRequestDTO)
                 .retrieve()
-                .toBodilessEntity()
-                .subscribe();
+                .bodyToMono(PCCResponseDTO.class);
 
-        return  a.toString();
+        // Block and get the result
+        return responseMono.block();
     }
 
 
-    public void sendBackToPCC(PCCRequestDTO pccRequestDTO, String accountNumber, Long userId) {
+    public PCCResponseDTO sendBackToPCC(PCCRequestDTO pccRequestDTO, String accountNumber, Long userId) {
         IdTimestampDTO issuerOrderIdTS = generateOrderId();
         PCCResponseDTO pccResponseDTO = new PCCResponseDTO(
                 pccRequestDTO.getPan(),
@@ -92,6 +92,7 @@ public class BankService {
                 accountNumber
         );
         transactionService.insertTransactionIssuer(pccResponseDTO, userId);
+        /*
         Object a = webClient.post()
                 .uri("http://localhost:8082/pcc/toAcquirerBank")
                 .bodyValue(pccResponseDTO)
@@ -99,30 +100,47 @@ public class BankService {
                 .toBodilessEntity()
                 .subscribe();
 
+         */
+        return pccResponseDTO;
+
     }
 
-    public void sendBackToPSPPCC(PCCResponseDTO pccResponseDTO) {
+    public PSPResponseDTO sendBackToPSPPCC(PCCResponseDTO pccResponseDTO) {
         transactionService.updateTransaction(pccResponseDTO);
+        return new PSPResponseDTO(
+                successUrl,
+                pccResponseDTO.getAcquirerOrderId(),
+                pccResponseDTO.getAcquirerTimestamp(),
+                pccResponseDTO.getMerchantOrderId(),
+                pccResponseDTO.getPaymentId()
+        );
     }
-    public void sendBackToPSP(CardTransactionRequestDTO cardTransactionRequestDTO, Long issuerId) {
+    public PSPResponseDTO sendBackToPSP(CardTransactionRequestDTO cardTransactionRequestDTO, Long issuerId, Transaction transaction) {
         IdTimestampDTO acquirerOrderIdTS = generateOrderId();
         //From where do I get merhcantId, merchant OrderId and timestamp paymentId
-        String accNumberMerch = accountService.getAccountNumberMerchant(1L);
+        String accNumberMerch = accountService.getAccountNumberMerchant(transaction.getMerchant().getId());
         String accNumberIss = accountService.getAccountNumberIssuer(issuerId);
         PCCRequestDTO pccRequestDTO = new PCCRequestDTO(
                 cardTransactionRequestDTO.getPan(),
                 cardTransactionRequestDTO.getSecurityCode(),
                 cardTransactionRequestDTO.getCardHolderName(),
                 cardTransactionRequestDTO.getExpirationDate(),
-                cardTransactionRequestDTO.getAmount(),
+                transaction.getAmount(),
                 acquirerOrderIdTS.getId(),
                 acquirerOrderIdTS.getTimestamp(),
                 bankId,
-                "merchantOrderId",
-                LocalDateTime.now(),
-                "PaymentId",
+                transaction.getMerchantOrderId(),
+                transaction.getMerchantTimestamp(),
+                transaction.getPaymentId(),
                 accNumberMerch
         );
-        transactionService.insertTransaction(pccRequestDTO,1L,accNumberIss, issuerId);
+        transactionService.insertTransaction(pccRequestDTO,accNumberIss, issuerId);
+        return new PSPResponseDTO(
+                successUrl,
+                acquirerOrderIdTS.getId(),
+                acquirerOrderIdTS.getTimestamp(),
+                transaction.getMerchantOrderId(),
+                transaction.getPaymentId()
+        );
     }
 }

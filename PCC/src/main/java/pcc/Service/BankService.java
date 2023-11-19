@@ -7,6 +7,7 @@ import pcc.DTO.PCCRequestDTO;
 import pcc.DTO.PCCResponseDTO;
 import pcc.Model.Bank;
 import pcc.Repository.BankRepository;
+import reactor.core.publisher.Mono;
 
 @Service
 public class BankService {
@@ -28,14 +29,15 @@ public class BankService {
 
     }
 
-    public void sendToIssuerBank(PCCRequestDTO pccRequestDTO, String bankUrl) {
-        //Objekat ceo prosledjujem PCCRequestDTO dalje na sledecu aplikaciju
-        Object a = webClient.post()
-                .uri(bankUrl+"/bank/payIssuer")
+    public PCCResponseDTO sendToIssuerBank(PCCRequestDTO pccRequestDTO, String bankUrl) {
+        Mono<PCCResponseDTO> responseMono = webClient.post()
+                .uri(bankUrl + "/bank/payIssuer")
                 .bodyValue(pccRequestDTO)
                 .retrieve()
-                .toBodilessEntity()
-                .subscribe();
+                .bodyToMono(PCCResponseDTO.class);
+
+        // Block and get the result
+        return responseMono.block();
     }
     public void sendToAcquirerBank(PCCResponseDTO pccResponseDTO,String bankUrl) {
         //Objekat ceo prosledjujem PCCRequestDTO dalje na sledecu aplikaciju

@@ -16,14 +16,16 @@ public class PCCController {
     @Autowired
     private BankService bankService;
     @PostMapping("/toIssuerBank")
-    public ResponseEntity<String> redirectToIssuerBank(@RequestBody PCCRequestDTO pccRequestDTO) {
+    public ResponseEntity<PCCResponseDTO> redirectToIssuerBank(@RequestBody PCCRequestDTO pccRequestDTO) {
         try {
             String bankUrl = bankService.getBankUrl(pccRequestDTO.getPan());
-            bankService.sendToIssuerBank(pccRequestDTO,bankUrl);
-
-          return ResponseEntity.ok("Vraceno iz druge aplikacije");
+            PCCResponseDTO pccResponseDTO = bankService.sendToIssuerBank(pccRequestDTO,bankUrl);
+            System.out.println("Recieved from issuer bank response");
+            //return bez url banke
+            //bankService.sendToAcquirerBank(pccResponseDTO);
+          return ResponseEntity.ok(pccResponseDTO);
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error transferring money: " + e.getMessage());
+            return ResponseEntity.status(500).body(new PCCResponseDTO());
         }
     }
     //promeniti novi dto sa issuer order

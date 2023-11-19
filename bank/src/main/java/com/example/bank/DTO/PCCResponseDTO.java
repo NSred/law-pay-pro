@@ -40,6 +40,10 @@ public class PCCResponseDTO {
         this.issuerAccountNumber = issuerAccountNumber;
     }
 
+    public PCCResponseDTO() {
+
+    }
+
     public Long getIssuerOrderId() {
         return issuerOrderId;
     }

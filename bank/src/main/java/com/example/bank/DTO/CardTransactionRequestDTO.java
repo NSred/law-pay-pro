@@ -5,14 +5,14 @@ public class CardTransactionRequestDTO{
         private String securityCode;
         private String cardHolderName;
         private String expirationDate;
-        private Double amount;
+        private String paymentId;
 
-    public Double getAmount() {
-        return amount;
+    public String getPaymentId() {
+        return paymentId;
     }
 
-    public void setAmount(Double amount) {
-        this.amount = amount;
+    public void setPaymentId(String paymentId) {
+        this.paymentId = paymentId;
     }
 
     public String getPan() {

@@ -33,11 +33,12 @@ public class TransactionService {
         transaction.setMerchantTimestamp(request.getMerchantTimestamp());
         transaction.setStatus(Status.PENDING);
         transaction.setPaymentId(paymentId);
+        transaction.setMerchant(merchantRepository.findMerchantByMerchantId(request.merchantId));
         transactionRepository.save(transaction);
     }
 
-    public void insertTransactionAcquirer(PCCRequestDTO pccRequestDTO, Long merchantId){
-        Transaction transaction = new Transaction();
+    public void insertTransactionAcquirer(PCCRequestDTO pccRequestDTO){
+        Transaction transaction = transactionRepository.findByPaymentId(pccRequestDTO.getPaymentId()).orElse(null);
 
         transaction.setAmount(pccRequestDTO.getAmount());
         transaction.setMerchantOrderId(pccRequestDTO.getMerchantOrderId());
@@ -47,7 +48,6 @@ public class TransactionService {
         transaction.setStatus(Status.PENDING);
         transaction.setPaymentId(pccRequestDTO.getPaymentId());
         transaction.setAcquirerAccountNumber(pccRequestDTO.getAcquirerAccountNumber());
-        transaction.setMerchant(merchantRepository.getById(merchantId));
 
         transactionRepository.save(transaction);
     }
@@ -81,8 +81,8 @@ public class TransactionService {
         transactionRepository.save(transaction);
     }
 
-    public void insertTransaction(PCCRequestDTO pccRequestDTO, long merchantId, String accNumberIss, long userId) {
-        Transaction transaction = new Transaction();
+    public void insertTransaction(PCCRequestDTO pccRequestDTO, String accNumberIss, long userId) {
+        Transaction transaction = transactionRepository.findByPaymentId(pccRequestDTO.getPaymentId()).orElse(null);
 
         transaction.setAmount(pccRequestDTO.getAmount());
         transaction.setMerchantOrderId(pccRequestDTO.getMerchantOrderId());
@@ -92,11 +92,14 @@ public class TransactionService {
         transaction.setStatus(Status.SUCCESSFUL);
         transaction.setPaymentId(pccRequestDTO.getPaymentId());
         transaction.setAcquirerAccountNumber(pccRequestDTO.getAcquirerAccountNumber());
-        transaction.setMerchant(merchantRepository.getById(merchantId));
         transaction.setIssuerAccountNumber(accNumberIss);
         transaction.setUser(userRepository.getById(userId));
 
         transactionRepository.save(transaction);
+    }
+
+    public Transaction getTransactionbyPaymentId(String paymentId) {
+        return transactionRepository.findByPaymentId(paymentId).orElse(null);
     }
 }
 
