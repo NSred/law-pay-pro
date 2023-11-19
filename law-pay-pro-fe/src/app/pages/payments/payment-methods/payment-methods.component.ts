@@ -5,7 +5,9 @@ import {MatRadioChange, MatRadioModule} from "@angular/material/radio";
 import {FormsModule} from "@angular/forms";
 import {paymentType} from "../constants/payment.constants";
 import {ButtonComponent} from "../../../shared/components/buttons/button/button.component";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import {PaymentService} from "../services/payment.service";
+import {PaymentDto, PaymentType} from "../requests/payment-requests";
 
 @Component({
   selector: 'app-payment-methods',
@@ -15,21 +17,39 @@ import {Router} from "@angular/router";
   styleUrl: './payment-methods.component.scss'
 })
 export class PaymentMethodsComponent implements OnInit{
+  private readonly paymentService = inject(PaymentService)
+  private readonly route = inject(ActivatedRoute)
   private readonly router = inject(Router)
   protected readonly paymentType = paymentType;
   selectedValue: string = '';
   disabled: boolean = true;
+  offerId: string | null = '';
 
   ngOnInit(): void {
-    console.log(this.selectedValue)
+    this.route.paramMap.subscribe(params => {
+      this.offerId = params.get('id');
+    })
   }
 
   onRadioButtonChange($event: MatRadioChange) {
     this.disabled = false
-    console.log($event.value)
   }
 
   goBackToOffers() {
     this.router.navigate(['offers']).then()
+  }
+
+  makePaymentRequest() {
+    let request: PaymentDto = {
+      offerId: Number(this.offerId),
+      paymentType: PaymentType[this.selectedValue as keyof typeof PaymentType],
+      userId: 1 //napravi methodu da dobavis ulogovanog usera
+    }
+    this.paymentService.processPayment(request).subscribe({
+      next: url => {
+        //redirekcija neka il nesto
+        console.log(url)
+      }
+    })
   }
 }

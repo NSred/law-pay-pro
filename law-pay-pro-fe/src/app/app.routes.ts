@@ -22,7 +22,7 @@ export const routes: Routes = [
     component: AllOffersComponent
   },
   {
-    path: 'payment',
+    path: 'payment/:id',
     component: PaymentMethodsComponent
   }
 ];
