@@ -27,7 +27,7 @@ public class ActiveMqProducer implements IProducer {
                 message.setJMSCorrelationID(UUID.randomUUID().toString());
                 return message;
             } catch (NullPointerException e){
-                throw new MessageNullException("Poruka ne sme biti null");
+                throw new MessageNullException(e.getMessage());
             }
 //            Message message = Objects.requireNonNull(jmsTemplate.getMessageConverter()).toMessage(request, session);
 //            message.setJMSCorrelationID(UUID.randomUUID().toString());

@@ -1,6 +1,7 @@
 package com.lawagency.lawly.external.httpclient;
 
 import com.lawagency.lawly.external.common.PspPaymentRequest;
+import com.lawagency.lawly.handler.exceptions.HttpClientException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -18,10 +19,14 @@ public class HttpClientService {
     private String apiKey;
 
     public String sendRequest(PspPaymentRequest request) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("API-Key", apiKey);
-        HttpEntity<PspPaymentRequest> message = new HttpEntity<>(request, headers);
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("API-Key", apiKey);
+            HttpEntity<PspPaymentRequest> message = new HttpEntity<>(request, headers);
+            return restTemplate.postForObject(pspUrl, message, String.class);
+        } catch (Exception e){
+            throw new HttpClientException(e.getMessage());
+        }
 
-        return restTemplate.postForObject(pspUrl, message, String.class);
     }
 }

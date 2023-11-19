@@ -3,6 +3,7 @@ package com.lawagency.lawly.services.payments;
 import com.lawagency.lawly.dtos.PaymentRequest;
 import com.lawagency.lawly.external.common.PspPaymentRequest;
 import com.lawagency.lawly.external.httpclient.HttpClientService;
+import com.lawagency.lawly.handler.exceptions.ProccessPaymentException;
 import com.lawagency.lawly.model.Offer;
 import com.lawagency.lawly.model.mappers.PaymentMapper;
 import com.lawagency.lawly.services.OfferService;
@@ -17,8 +18,12 @@ public class PaymentServiceImpl implements PaymentService{
 
     @Override
     public String processPayment(PaymentRequest request) {
-        Offer offer = offerService.findOne(request.getOfferId());
-        PspPaymentRequest pspRequest = PaymentMapper.mapToPspPaymentRequest(request, offer.getPrice());
-        return httpClientService.sendRequest(pspRequest);
+        try{
+            Offer offer = offerService.findOne(request.getOfferId());
+            PspPaymentRequest pspRequest = PaymentMapper.mapToPspPaymentRequest(request, offer.getPrice());
+            return httpClientService.sendRequest(pspRequest);
+        } catch (Exception e){
+            throw new ProccessPaymentException(e.getMessage());
+        }
     }
 }
