@@ -1,0 +1,35 @@
+<div class="input-wrapper">
+  <label class="label">{{label}}</label>
+  <div class="field">
+    <div class="icon-field">
+      <i [class]="icon"></i>
+    </div>
+    <input *ngIf="fieldType === 'cardholder'"
+           class="input-field"
+           [formControl]="control"
+           [placeholder]="placeholder"
+           [type]="type"
+    />
+    <input *ngIf="fieldType === 'card-number'"
+      class="input-field"
+      [formControl]="control"
+      [placeholder]="placeholder"
+      [type]="type"
+      appCardNumber
+    />
+    <input *ngIf="fieldType === 'expiry-date'"
+      class="input-field"
+      [formControl]="control"
+      [placeholder]="placeholder"
+      [type]="type"
+      appExpiryDate
+    />
+    <input *ngIf="fieldType === 'security-code'"
+           class="input-field"
+           [formControl]="control"
+           [placeholder]="placeholder"
+           [type]="type"
+           appSecurityCode
+    />
+  </div>
+</div>

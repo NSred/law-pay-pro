@@ -1,0 +1,68 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="header">
+      <h2>Payment details</h2>
+      <div class="logo">
+        <img
+          [ngSrc]="'../../../../assets/images/visa64.png'"
+          height="64"
+          width="64"
+          alt="logo"
+          priority
+        />
+        <img
+          [ngSrc]="'../../../../assets/images/master64.png'"
+          height="64"
+          width="64"
+          alt="logo"
+          priority
+        />
+      </div>
+    </div>
+    <div class="content">
+      <app-icon-input-field
+        class="padding"
+        [label]="'Cardholder name'"
+        [placeholder]="'Name Surname'"
+        [type]="'text'"
+        [icon]="'fa fa-users'"
+        [fieldType]="'cardholder'"
+        [control]="formGroup.controls.cardHolder"
+      />
+      <app-icon-input-field
+        [label]="'Card number'"
+        [placeholder]="'•••• •••• •••• ••••'"
+        [type]="'text'"
+        [icon]="'fa fa-credit-card'"
+        [fieldType]="'card-number'"
+        [control]="formGroup.controls.cardNumber"
+      />
+      <div class="inline-fields">
+        <app-icon-input-field
+          [label]="'Expiry date'"
+          [placeholder]="'MM/YY'"
+          [type]="'text'"
+          [icon]="'fa fa-calendar'"
+          [fieldType]="'expiry-date'"
+          [control]="formGroup.controls.expiryDate"
+        />
+        <app-icon-input-field
+          [label]="'Security code'"
+          [placeholder]="'CVC'"
+          [type]="'text'"
+          [icon]="'fa fa-lock'"
+          [fieldType]="'security-code'"
+          [control]="formGroup.controls.securityCode"
+        />
+      </div>
+    </div>
+    <div class="button">
+      <app-button
+        [style.width]="'12dvw'"
+        [info]="'Confirm'"
+        (click)="makePayment()"
+        [disabled]="disabled"
+      />
+    </div>
+  </div>
+</div>

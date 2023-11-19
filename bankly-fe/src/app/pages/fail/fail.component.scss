@@ -1,0 +1,19 @@
+.success-wrapper {
+  color: var(--text-color);
+  display: flex;
+  height: 50%;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container {
+  padding: 5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.span {
+  padding-top: 2rem;
+  font-size: 30px;
+}

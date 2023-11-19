@@ -1,0 +1,43 @@
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  justify-content: center;
+  padding-top: 1rem;
+}
+
+.label {
+  padding: .3rem .3rem .3rem .2rem;
+}
+
+.field {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  background-color: var(--secondary);
+  border-radius: 5px;
+  border-width: 0;
+  padding: .3rem .3rem .3rem .3rem;
+  &:hover {
+    box-shadow: 0 0 0.2em var(--text-color);
+  }
+}
+
+.input-field {
+  width: 100%;
+  background-color: var(--secondary);
+  border-radius: 5px;
+  border-width: 0;
+  color: var(--text-color);
+  padding: .6rem .6rem .6rem .6rem;
+  outline: none;
+}
+
+.icon-field {
+  display: flex;
+  flex-direction: row;
+  font-size: 13px;
+  padding-left: 0.2rem;
+  color: var(--selection-color);
+  z-index: 1;
+}
