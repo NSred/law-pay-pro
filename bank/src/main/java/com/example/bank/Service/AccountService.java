@@ -16,28 +16,49 @@ public class AccountService {
         this.accountRepository = accountRepository;
     }
 
+    public String getAccountNumberMerchant(Long merchantId){
+        Account account = accountRepository.findByMerchantMerchantId(merchantId).orElse(null);
+        return account.getAccountNumber();
+
+    }
+    public String getAccountNumberIssuer(Long issuerId){
+        Account account = accountRepository.findByUserUserId(issuerId).orElse(null);
+        return account.getAccountNumber();
+
+    }
+
     @Transactional
-    public boolean transferMoney(Long accountIssuerId, Long MerchantId, Double amount) {
-        Account accountIssuer = accountRepository.findById(accountIssuerId).orElse(null);
-        Account accountMerchant = accountRepository.findByMerchantMerchantId(MerchantId).orElse(null);
+    public boolean withdrawMoney(Long accountIssuerId, Double amount) {
+        Account accountIssuer = accountRepository.findByUserUserId(accountIssuerId).orElse(null);
         if (accountIssuer != null) {
             Double currentBalance = accountIssuer.getBalance();
             if (currentBalance.compareTo(amount) >= 0) {
                 Double newBalance = currentBalance - amount;
+                System.out.println(newBalance);
                 accountIssuer.setBalance(newBalance);
                 accountRepository.save(accountIssuer);
+                return true;
             }
         }
-        if (accountMerchant != null) {
-            Double currentBalance = accountMerchant.getBalance();
+        return false;
+    }
+
+    @Transactional
+    public boolean depositMoney(Long accountReceiverId, Double amount) {
+        Account accountReceiver = accountRepository.findByMerchantMerchantId(accountReceiverId).orElse(null);
+        if (accountReceiver != null) {
+            Double currentBalance = accountReceiver.getBalance();
             Double newBalance = currentBalance + amount;
             System.out.println(newBalance);
-            accountMerchant.setBalance(newBalance);
-            accountRepository.save(accountMerchant);
+            accountReceiver.setBalance(newBalance);
+            accountRepository.save(accountReceiver);
             return true;
         }
-
-
         return false;
+    }
+
+    public Long getAccountId(String acquirerAccountNumber) {
+        Account account = accountRepository.findByAccountNumber(acquirerAccountNumber).orElse(null);
+        return account.getAccountId();
     }
 }

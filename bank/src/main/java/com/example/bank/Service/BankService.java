@@ -1,29 +1,128 @@
 package com.example.bank.Service;
 
+import com.example.bank.DTO.PCCRequestDTO;
+import com.example.bank.DTO.PCCResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import com.example.bank.DTO.CardTransactionRequestDTO;
+import com.example.bank.DTO.IdTimestampDTO;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.Disposable;
+
+import java.time.LocalDateTime;
 
 @Service
 public class BankService {
-/*
+
     @Autowired
     private CardService cardService;
 
     @Autowired
     private AccountService accountService;
-*/
+    @Autowired
+    private TransactionService transactionService;
+
+
+    @Value("${bank.id}")
+    private String bankId;
+
+    private final WebClient webClient;
+    public BankService(WebClient.Builder webClientBuilder) {
+        this.webClient = webClientBuilder.build();
+    }
+
     public boolean isSameBank(String pan) {
-        // Implement logic to check if the first six digits of the PAN match the bank number
-        // You may need to retrieve the bank number from a configuration or database
-        String bankNumber = "1234 12"; // Replace with the actual bank number
-        return pan.startsWith(bankNumber);
+        return pan.startsWith(bankId);
+    }
+    public IdTimestampDTO generateOrderId(){
+        long order_id = (long) (Math.random() * 10000000000L);
+        LocalDateTime timestamp = LocalDateTime.now();
+
+        return new IdTimestampDTO(order_id, timestamp);
+    }
+
+    public String sendToPCC(CardTransactionRequestDTO cardTransactionRequestDTO) {
+        IdTimestampDTO acquirerOrderIdTS = generateOrderId();
+        //From where do I get merhcantId, merchant OrderId and timestamp paymentId
+        String accNumber = accountService.getAccountNumberMerchant(1L);
+        PCCRequestDTO pccRequestDTO = new PCCRequestDTO(
+                cardTransactionRequestDTO.getPan(),
+                cardTransactionRequestDTO.getSecurityCode(),
+                cardTransactionRequestDTO.getCardHolderName(),
+                cardTransactionRequestDTO.getExpirationDate(),
+                cardTransactionRequestDTO.getAmount(),
+                acquirerOrderIdTS.getId(),
+                acquirerOrderIdTS.getTimestamp(),
+                bankId,
+                "merchantOrderId",
+                LocalDateTime.now(),
+                "PaymentId",
+                accNumber
+                );
+        transactionService.insertTransactionAcquirer(pccRequestDTO,1L);
+        Object a = webClient.post()
+                .uri("http://localhost:8082/pcc/toIssuerBank")
+                .bodyValue(pccRequestDTO)
+                .retrieve()
+                .toBodilessEntity()
+                .subscribe();
+
+        return  a.toString();
     }
 
 
-/*
-    public void transferMoney(CardTransactionRequest cardTransactionRequest) {
-        // Implement logic to transfer money from one account to another based on the card details
-        // You may need to retrieve account details using the card information
-        cardService.processCardTransaction(cardTransactionRequest);
-    }*/
+    public void sendBackToPCC(PCCRequestDTO pccRequestDTO, String accountNumber, Long userId) {
+        IdTimestampDTO issuerOrderIdTS = generateOrderId();
+        PCCResponseDTO pccResponseDTO = new PCCResponseDTO(
+                pccRequestDTO.getPan(),
+                pccRequestDTO.getSecurityCode(),
+                pccRequestDTO.getCardHolderName(),
+                pccRequestDTO.getExpirationDate(),
+                pccRequestDTO.getAmount(),
+                pccRequestDTO.getAcquirerOrderId(),
+                pccRequestDTO.getAcquirerTimestamp(),
+                issuerOrderIdTS.getId(),
+                issuerOrderIdTS.getTimestamp(),
+                pccRequestDTO.getBankId(),
+                pccRequestDTO.getMerchantOrderId(),
+                pccRequestDTO.getMerchantTimestamp(),
+                pccRequestDTO.getPaymentId(),
+                pccRequestDTO.getAcquirerAccountNumber(),
+                accountNumber
+        );
+        transactionService.insertTransactionIssuer(pccResponseDTO, userId);
+        Object a = webClient.post()
+                .uri("http://localhost:8082/pcc/toAcquirerBank")
+                .bodyValue(pccResponseDTO)
+                .retrieve()
+                .toBodilessEntity()
+                .subscribe();
+
+    }
+
+    public void sendBackToPSPPCC(PCCResponseDTO pccResponseDTO) {
+        transactionService.updateTransaction(pccResponseDTO);
+    }
+    public void sendBackToPSP(CardTransactionRequestDTO cardTransactionRequestDTO, Long issuerId) {
+        IdTimestampDTO acquirerOrderIdTS = generateOrderId();
+        //From where do I get merhcantId, merchant OrderId and timestamp paymentId
+        String accNumberMerch = accountService.getAccountNumberMerchant(1L);
+        String accNumberIss = accountService.getAccountNumberIssuer(issuerId);
+        PCCRequestDTO pccRequestDTO = new PCCRequestDTO(
+                cardTransactionRequestDTO.getPan(),
+                cardTransactionRequestDTO.getSecurityCode(),
+                cardTransactionRequestDTO.getCardHolderName(),
+                cardTransactionRequestDTO.getExpirationDate(),
+                cardTransactionRequestDTO.getAmount(),
+                acquirerOrderIdTS.getId(),
+                acquirerOrderIdTS.getTimestamp(),
+                bankId,
+                "merchantOrderId",
+                LocalDateTime.now(),
+                "PaymentId",
+                accNumberMerch
+        );
+        transactionService.insertTransaction(pccRequestDTO,1L,accNumberIss, issuerId);
+    }
 }
