@@ -19,4 +19,6 @@ public class OfferServiceImpl implements OfferService{
     public List<Offer> findAll(){
         return repository.findAll();
     }
+
+    public Offer findOne(Long id) {return repository.findOne(id);}
 }

@@ -1,39 +1,38 @@
 package rs.wepublishlaws.paymentserviceprovider.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import rs.wepublishlaws.paymentserviceprovider.controllers.PaymentRequest;
-import rs.wepublishlaws.shared.messages.PaymentMessage;
-import rs.wepublishlaws.shared.messages.PaymentResponse;
-import rs.wepublishlaws.shared.queues.QueueConstants;
 import rs.wepublishlaws.buildingblocks.IProducer;
+import rs.wepublishlaws.paymentserviceprovider.dto.PspPaymentRequest;
+import rs.wepublishlaws.paymentserviceprovider.model.Merchant;
+import rs.wepublishlaws.shared.messages.PaymentMessage;
+import rs.wepublishlaws.shared.queues.QueueConstants;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class PaymentService {
 
-    private final IProducer jmsTemplate;
+    private final IProducer producer;
+    private final MerchantService merchantService;
 
-    @Autowired
-    public PaymentService(IProducer jmsTemplate){
-        this.jmsTemplate = jmsTemplate;
-    }
+    public String processPayment(PspPaymentRequest request, String apiKey) {
 
-    public PaymentResponse processPayment(PaymentRequest request) {
-
-        String destination = switch (request.service) {
-            case "qrcode" -> QueueConstants.QRCODE_SERVICE_QUEUE;
-            case "paypal" -> QueueConstants.PAYPAL_SERVICE_QUEUE;
-            case "crypto" -> QueueConstants.CRYPTO_SERVICE_QUEUE;
-            case "card" -> QueueConstants.CARD_SERVICE_QUEUE;
-            case "null" -> QueueConstants.CARD_SERVICE_QUEUE;
-            default -> "";
+        Merchant merchant = merchantService.findMerchantByApiKey(apiKey);
+        if (merchant == null)
+            return "ERROR URL "; //treba izgenerisati
+        String destination = switch (request.getPaymentType()) {
+            case QR_CODE -> QueueConstants.QRCODE_SERVICE_QUEUE;
+            case PAY_PAL -> QueueConstants.PAYPAL_SERVICE_QUEUE;
+            case CRYPTO_CURRENCY -> QueueConstants.CRYPTO_SERVICE_QUEUE;
+            default -> QueueConstants.CARD_SERVICE_QUEUE;
         };
-        PaymentResponse response = jmsTemplate.sendAndReceive(destination,
-                new PaymentMessage(request.service)
-                /*new PaymentMessage(request.merchantId, request.merchantPassword,
-                        request.amount, request.merchantOrderId, request.merchantTimestamp,
-                        request.successUrl, request.failedUrl, request.errorUrl
-                )*/, PaymentResponse.class);
-        return  response;
+        return producer.sendAndReceive(destination,
+                new PaymentMessage(merchant.getMerchantId(), merchant.getMerchantPassword(),
+                        request.getAmount(), UUID.randomUUID(), LocalDateTime.now(),
+                        "", "", ""),
+                String.class);
     }
 }

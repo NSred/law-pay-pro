@@ -30,6 +30,9 @@ public class MerchantServiceImpl implements MerchantService {
         return apiKey;
     }
 
+    @Override
+    public Merchant findMerchantByApiKey(String apiKey) { return this.repository.findMerchantByApiKey(apiKey);}
+
     private void save(String merchantId, String merchantPassword, String apiKey) {
         Merchant merchant = new Merchant();
         merchant.setMerchantId(merchantId);

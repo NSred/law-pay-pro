@@ -24,10 +24,10 @@ public class CardConsumer {
         PaymentMessage paymentMessage = (PaymentMessage) Objects.requireNonNull(converter).fromMessage(message);
         System.out.println(paymentMessage);
 
-        PaymentResponse response = new PaymentResponse();
+        /*PaymentResponse response = new PaymentResponse();
         response.setMessage("Card consumer received a message.");
-        response.setDateTime(LocalDateTime.now());
+        response.setDateTime(LocalDateTime.now());*/
 
-        jmsTemplate.send(message.getJMSReplyTo(), session -> Objects.requireNonNull(jmsTemplate.getMessageConverter()).toMessage(response, session));
+        jmsTemplate.send(message.getJMSReplyTo(), session -> Objects.requireNonNull(jmsTemplate.getMessageConverter()).toMessage("Card consumer received a message.", session));
     }
 }
