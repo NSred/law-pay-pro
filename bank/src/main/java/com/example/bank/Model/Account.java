@@ -20,7 +20,7 @@ public class Account {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "merchant_id")
+    @JoinColumn(name = "id")
     private Merchant merchant;
 
     @OneToMany(mappedBy = "account")

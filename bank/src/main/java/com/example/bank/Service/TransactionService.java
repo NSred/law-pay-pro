@@ -2,16 +2,16 @@ package com.example.bank.Service;
 
 import com.example.bank.DTO.PCCRequestDTO;
 import com.example.bank.DTO.PCCResponseDTO;
-import com.example.bank.Model.Account;
+import com.example.bank.DTO.PaymentDTO;
 import com.example.bank.Model.Enum.Status;
-import com.example.bank.Model.Merchant;
 import com.example.bank.Model.Transaction;
-import com.example.bank.Repository.CardRepository;
 import com.example.bank.Repository.MerchantRepository;
 import com.example.bank.Repository.TransactionRepository;
 import com.example.bank.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 public class TransactionService {
@@ -24,6 +24,16 @@ public class TransactionService {
         this.transactionRepository = transactionRepository;
         this.merchantRepository = merchantRepository;
         this.userRepository = userRepository;
+    }
+
+    public void createBaseTransaction(PaymentDTO request, String paymentId){
+        Transaction transaction = new Transaction();
+        transaction.setAmount(request.getAmount());
+        transaction.setMerchantOrderId(request.getMerchantOrderId());
+        transaction.setMerchantTimestamp(request.getMerchantTimestamp());
+        transaction.setStatus(Status.PENDING);
+        transaction.setPaymentId(paymentId);
+        transactionRepository.save(transaction);
     }
 
     public void insertTransactionAcquirer(PCCRequestDTO pccRequestDTO, Long merchantId){

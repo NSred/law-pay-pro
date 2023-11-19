@@ -1,7 +1,8 @@
 package com.lawagency.lawly.services.payments;
 
 import com.lawagency.lawly.dtos.PaymentRequest;
+import com.lawagency.lawly.dtos.responses.PaymentResponse;
 
 public interface PaymentService {
-    String processPayment(PaymentRequest request);
+    PaymentResponse processPayment(PaymentRequest request);
 }

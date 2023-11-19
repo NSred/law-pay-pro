@@ -1,6 +1,7 @@
 package com.lawagency.lawly.controllers;
 
 import com.lawagency.lawly.dtos.PaymentRequest;
+import com.lawagency.lawly.dtos.responses.PaymentResponse;
 import com.lawagency.lawly.services.payments.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -18,8 +19,8 @@ public class PaymentController {
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     //@PreAuthorize("hasRole('USER')")
-    public ResponseEntity<String> processPayment(@RequestBody PaymentRequest request) {
-        String url = paymentService.processPayment(request);
-        return ResponseEntity.ok(url);
+    public ResponseEntity<PaymentResponse> processPayment(@RequestBody PaymentRequest request) {
+        PaymentResponse response = paymentService.processPayment(request);
+        return ResponseEntity.ok(response);
     }
 }

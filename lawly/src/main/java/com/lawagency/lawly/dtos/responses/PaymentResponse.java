@@ -1,4 +1,4 @@
-package rs.wepublishlaws.shared.messages;
+package com.lawagency.lawly.dtos.responses;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -17,7 +17,7 @@ public class AccountService {
     }
 
     public String getAccountNumberMerchant(Long merchantId){
-        Account account = accountRepository.findByMerchantMerchantId(merchantId).orElse(null);
+        Account account = accountRepository.findAccountByMerchantId(merchantId).orElse(null);
         return account.getAccountNumber();
 
     }
@@ -45,7 +45,7 @@ public class AccountService {
 
     @Transactional
     public boolean depositMoney(Long accountReceiverId, Double amount) {
-        Account accountReceiver = accountRepository.findByMerchantMerchantId(accountReceiverId).orElse(null);
+        Account accountReceiver = accountRepository.findAccountByMerchantId(accountReceiverId).orElse(null);
         if (accountReceiver != null) {
             Double currentBalance = accountReceiver.getBalance();
             Double newBalance = currentBalance + amount;

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import rs.wepublishlaws.buildingblocks.handler.exceptions.HttpResponseException;
 import rs.wepublishlaws.shared.messages.PaymentMessage;
+import rs.wepublishlaws.shared.messages.PaymentResponse;
 import rs.wepublishlaws.shared.queues.QueueConstants;
 
 import java.util.Objects;
@@ -30,18 +31,13 @@ public class CardConsumer {
         System.out.println(paymentMessage);
 
         try{
-
             //HTTP poziv Bank aplikacije koja vraca Url string
             HttpEntity<PaymentMessage> bankRequest = new HttpEntity<>(paymentMessage);
-            String responseUrl = restTemplate.postForObject(bankUrl, bankRequest, String.class);
-
-            /*PaymentResponse response = new PaymentResponse();
-            response.setMessage("Card consumer received a message.");
-            response.setDateTime(LocalDateTime.now());*/
+            PaymentResponse response = restTemplate.postForObject(bankUrl, bankRequest, PaymentResponse.class);
 
             jmsTemplate.send(message.getJMSReplyTo(), session ->
                     Objects.requireNonNull(jmsTemplate.getMessageConverter())
-                            .toMessage("Card service pogodjen", session)
+                            .toMessage(response, session)
             );
         } catch (NullPointerException e){
             throw new HttpResponseException(e.getMessage());

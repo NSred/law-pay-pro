@@ -7,6 +7,7 @@ import rs.wepublishlaws.buildingblocks.IProducer;
 import rs.wepublishlaws.paymentserviceprovider.dto.PspPaymentRequest;
 import rs.wepublishlaws.paymentserviceprovider.model.Merchant;
 import rs.wepublishlaws.shared.messages.PaymentMessage;
+import rs.wepublishlaws.shared.messages.PaymentResponse;
 import rs.wepublishlaws.shared.queues.QueueConstants;
 
 import java.time.LocalDateTime;
@@ -25,11 +26,11 @@ public class PaymentServiceImpl implements PaymentService{
     @Value("${url-configuration.success_url}")
     private String successUrl;
 
-    public String processPayment(PspPaymentRequest request, String apiKey) {
+    public PaymentResponse processPayment(PspPaymentRequest request, String apiKey) {
 
         Merchant merchant = merchantService.findMerchantByApiKey(apiKey);
         if (merchant == null)
-            return errorUrl;
+            return new PaymentResponse(errorUrl, null);
         String destination = switch (request.getPaymentType()) {
             case QR_CODE -> QueueConstants.QRCODE_SERVICE_QUEUE;
             case PAY_PAL -> QueueConstants.PAYPAL_SERVICE_QUEUE;
@@ -40,6 +41,6 @@ public class PaymentServiceImpl implements PaymentService{
                 new PaymentMessage(merchant.getMerchantId(), merchant.getMerchantPassword(),
                         request.getAmount(), UUID.randomUUID(), LocalDateTime.now(),
                         successUrl, failedUrl, errorUrl),
-                String.class);
+                PaymentResponse.class);
     }
 }

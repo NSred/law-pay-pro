@@ -1,5 +1,6 @@
-package rs.wepublishlaws.shared.messages;
+package com.example.bank.DTO.responses;
 
+import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -9,5 +10,6 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 public class PaymentResponse {
     private String paymentUrl;
+    @Nullable
     private String paymentId;
 }

@@ -14,7 +14,6 @@ public class Transaction {
 
     @Column
     private Double amount;
-
     @Column
     private String merchantOrderId;
     @Column

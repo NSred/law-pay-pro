@@ -46,9 +46,9 @@ export class PaymentMethodsComponent implements OnInit{
       userId: 1 //napravi methodu da dobavis ulogovanog usera
     }
     this.paymentService.processPayment(request).subscribe({
-      next: url => {
+      next: res => {
         //redirekcija neka il nesto
-        console.log(url)
+        console.log(res)
       }
     })
   }

@@ -1,7 +1,8 @@
 package rs.wepublishlaws.paymentserviceprovider.service;
 
 import rs.wepublishlaws.paymentserviceprovider.dto.PspPaymentRequest;
+import rs.wepublishlaws.shared.messages.PaymentResponse;
 
 public interface PaymentService {
-    String processPayment(PspPaymentRequest request, String apiKey);
+    PaymentResponse processPayment(PspPaymentRequest request, String apiKey);
 }
