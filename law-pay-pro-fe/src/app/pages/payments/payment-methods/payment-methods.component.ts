@@ -8,6 +8,7 @@ import {ButtonComponent} from "../../../shared/components/buttons/button/button.
 import {ActivatedRoute, Router} from "@angular/router";
 import {PaymentService} from "../services/payment.service";
 import {PaymentDto, PaymentType} from "../requests/payment-requests";
+import {PaymentResponseDto} from "../responses/payment-response";
 
 @Component({
   selector: 'app-payment-methods',
@@ -47,9 +48,16 @@ export class PaymentMethodsComponent implements OnInit{
     }
     this.paymentService.processPayment(request).subscribe({
       next: res => {
-        //redirekcija neka il nesto
-        console.log(res)
+        this.redirect(res)
       }
     })
+  }
+
+  redirect(response: PaymentResponseDto) {
+    if (!response.paymentId) {
+      window.location.href = response.paymentUrl
+      return;
+    }
+    window.location.href = response.paymentUrl + '?data=' + encodeURIComponent(response.paymentId);
   }
 }

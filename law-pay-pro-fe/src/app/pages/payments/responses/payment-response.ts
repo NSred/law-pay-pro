@@ -1,4 +1,4 @@
-export interface PaymentResponse {
+export interface PaymentResponseDto {
   paymentUrl: string;
   paymentId: string;
 }

@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {CommonModule, NgOptimizedImage} from '@angular/common';
 import {IconInputFieldComponent} from "../../components/icon-input-field/icon-input-field.component";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
@@ -8,6 +8,8 @@ import {expiryDateValidator} from "../../components/validators/expiry-date-valid
 import {cvcValidator} from "../../components/validators/security-code-validator";
 import {ButtonComponent} from "../../components/button/button.component";
 import {BankService} from "../../services/bank.service";
+import {ActivatedRoute} from "@angular/router";
+import {CardPaymentRequest} from "../../requests/card-payment-request";
 
 export interface CardForm {
   cardHolder: FormControl<string>;
@@ -23,7 +25,8 @@ export interface CardForm {
   templateUrl: './credit-card-form.component.html',
   styleUrl: './credit-card-form.component.scss'
 })
-export class CreditCardFormComponent {
+export class CreditCardFormComponent implements OnInit{
+  private readonly route = inject(ActivatedRoute)
   private readonly bankService = inject(BankService)
   formGroup = new FormGroup<CardForm>(<CardForm>{
     cardHolder: new FormControl('', [Validators.required]),
@@ -32,11 +35,32 @@ export class CreditCardFormComponent {
     securityCode: new FormControl('', [Validators.required, cvcValidator]),
   })
   disabled: boolean = false;
+  paymentId: string = '';
+
+  ngOnInit(): void {
+    this.handlePageLoad()
+  }
+
+  handlePageLoad(){
+    this.route.queryParams.subscribe(params => {
+      this.paymentId = params['data'];
+    });
+  }
 
   makePayment() {
-    console.log(this.formGroup.controls.cardHolder.value);
-    console.log(this.formGroup.controls.cardNumber.value);
-    console.log(this.formGroup.controls.expiryDate.value);
-    console.log(this.formGroup.controls.securityCode.value);
+    this.formGroup.controls.cardNumber.setValue(this.formGroup.controls.cardNumber.value.replace(/\s+/g, ''));
+    this.formGroup.controls.expiryDate.setValue(this.formGroup.controls.expiryDate.value.replace(/\s*\/\s*/g, '/'));
+    let request: CardPaymentRequest = {
+      paymentId: this.paymentId,
+      securityCode: this.formGroup.controls.securityCode.value,
+      cardHolderName: this.formGroup.controls.cardHolder.value,
+      pan: this.formGroup.controls.cardNumber.value,
+      expirationDate: this.formGroup.controls.expiryDate.value,
+    }
+    this.bankService.transferMoney(request).subscribe({
+      next: res => {
+
+      }
+    })
   }
 }
