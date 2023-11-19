@@ -8,5 +8,5 @@ import lombok.RequiredArgsConstructor;
 public class PaymentRequest {
     private Long offerId;
     private String paymentType;
-    private String userId;
+    private Long userId;
 }
