@@ -1,6 +1,7 @@
 package com.example.bank.Service;
 
 import com.example.bank.DTO.CardTransactionRequestDTO;
+import com.example.bank.DTO.PCCRequestDTO;
 import com.example.bank.Model.Card;
 import com.example.bank.Repository.CardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,13 @@ public class CardService {
         // Mozda heshovati security code i vratiti samo poslednja 4 broja PAN-a
         Card card = cardRepository.findByPanAndSecurityCodeAndCardHolderNameAndExpirationDate(
                 cardTransactionRequestDTO.getPan(), cardTransactionRequestDTO.getSecurityCode(), cardTransactionRequestDTO.getCardHolderName(), cardTransactionRequestDTO.getExpirationDate());
+
+        return card;
+    }
+    public Card isCardInfoCorrectPCC(PCCRequestDTO pccRequestDTO) {
+        // Mozda heshovati security code i vratiti samo poslednja 4 broja PAN-a
+        Card card = cardRepository.findByPanAndSecurityCodeAndCardHolderNameAndExpirationDate(
+                pccRequestDTO.getPan(), pccRequestDTO.getSecurityCode(), pccRequestDTO.getCardHolderName(), pccRequestDTO.getExpirationDate());
 
         return card;
     }
