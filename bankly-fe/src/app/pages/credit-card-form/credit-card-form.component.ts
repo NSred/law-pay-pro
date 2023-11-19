@@ -48,18 +48,19 @@ export class CreditCardFormComponent implements OnInit{
   }
 
   makePayment() {
-    this.formGroup.controls.cardNumber.setValue(this.formGroup.controls.cardNumber.value.replace(/\s+/g, ''));
-    this.formGroup.controls.expiryDate.setValue(this.formGroup.controls.expiryDate.value.replace(/\s*\/\s*/g, '/'));
+    let cardNum = this.formGroup.controls.cardNumber.value.replace(/\D/g, '');
+    let expiryDate = this.formGroup.controls.expiryDate.value.replace(/\s*\/\s*/g, '/');
     let request: CardPaymentRequest = {
       paymentId: this.paymentId,
       securityCode: this.formGroup.controls.securityCode.value,
       cardHolderName: this.formGroup.controls.cardHolder.value,
-      pan: this.formGroup.controls.cardNumber.value,
-      expirationDate: this.formGroup.controls.expiryDate.value,
+      pan: cardNum,
+      expirationDate: expiryDate,
     }
     this.bankService.transferMoney(request).subscribe({
       next: res => {
-
+        console.log(res)
+        window.location.href = res.url;
       }
     })
   }

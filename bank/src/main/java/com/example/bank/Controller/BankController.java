@@ -41,7 +41,7 @@ public class BankController {
                     return ResponseEntity.ok(response);
                 }else {
                     PSPResponseDTO response = pspService.response(Url.FAILED);
-                    return ResponseEntity.badRequest().body(response);
+                    return ResponseEntity.ok().body(response);
                 }
             } else {
                 PCCResponseDTO pccResponseDTO = bankService.sendToPCC(cardTransactionRequestDTO, transaction);
