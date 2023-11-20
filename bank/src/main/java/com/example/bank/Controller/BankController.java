@@ -55,7 +55,11 @@ public class BankController {
                 PSPResponseDTO response = pspService.response(Url.FAILED);
                 return ResponseEntity.ok(response);
             }
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
+            PSPResponseDTO response = pspService.response(Url.FAILED);
+            return ResponseEntity.ok(response);
+        }
+        catch (Exception e) {
             PSPResponseDTO response = pspService.response(Url.ERROR);
             return ResponseEntity.ok(response);
         }
@@ -73,7 +77,8 @@ public class BankController {
 
                     return ResponseEntity.ok(pccResponseDTO);
                 }else {
-                    return ResponseEntity.badRequest().body(new PCCResponseDTO());
+                    throw new RuntimeException();
+                    //return ResponseEntity.badRequest().body(new PCCResponseDTO());
                 }
             } else {
                 return ResponseEntity.ok(new PCCResponseDTO());

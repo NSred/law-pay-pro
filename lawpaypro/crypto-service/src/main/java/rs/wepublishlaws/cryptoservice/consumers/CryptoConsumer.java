@@ -13,6 +13,7 @@ import rs.wepublishlaws.shared.queues.QueueConstants;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -23,11 +24,10 @@ public class CryptoConsumer {
     public void receiveMessage(final Message message) throws JMSException {
         MessageConverter converter = jmsTemplate.getMessageConverter();
         PaymentMessage paymentMessage = (PaymentMessage) Objects.requireNonNull(converter).fromMessage(message);
-        System.out.println(paymentMessage);
 
         PaymentResponse response = new PaymentResponse();
-        response.setMessage("Crypto service received a message.");
-        response.setDateTime(LocalDateTime.now());
+        response.setPaymentUrl("Crypto service says hello.");
+        response.setPaymentId(UUID.randomUUID().toString());
 
         jmsTemplate.send(message.getJMSReplyTo(), session -> Objects.requireNonNull(jmsTemplate.getMessageConverter()).toMessage(response, session));
     }
