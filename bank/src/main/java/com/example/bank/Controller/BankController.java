@@ -49,15 +49,15 @@ public class BankController {
                         accountService.getAccountId(pccResponseDTO.getAcquirerAccountNumber())
                         ,pccResponseDTO.getAmount())) {
 
-                    PSPResponseDTO reponse = bankService.sendBackToPSPPCC(pccResponseDTO);
-                    return ResponseEntity.ok(reponse);
+                    PSPResponseDTO response = bankService.sendBackToPSPPCC(pccResponseDTO);
+                    return ResponseEntity.ok(response);
                 }
                 PSPResponseDTO response = pspService.response(Url.FAILED);
                 return ResponseEntity.ok(response);
             }
         } catch (Exception e) {
             PSPResponseDTO response = pspService.response(Url.ERROR);
-            return ResponseEntity.status(500).body(response);
+            return ResponseEntity.ok(response);
         }
     }
     @PostMapping("/payIssuer")
