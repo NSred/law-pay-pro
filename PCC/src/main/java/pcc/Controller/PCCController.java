@@ -28,18 +28,4 @@ public class PCCController {
             return ResponseEntity.status(500).body(new PCCResponseDTO());
         }
     }
-    //promeniti novi dto sa issuer order
-    @PostMapping("/toAcquirerBank")
-    public ResponseEntity<String> redirectToAcquirerBank(@RequestBody PCCResponseDTO pccResponseDTO) {
-        try {
-            System.out.println("Recieved from issuer bank response");
-            String bankUrl = bankService.getBankUrlId(pccResponseDTO.getBankId());
-            System.out.println(bankUrl);
-            bankService.sendToAcquirerBank(pccResponseDTO,bankUrl);
-
-            return ResponseEntity.ok("Vraceno iz druge aplikacije");
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error transferring money: " + e.getMessage());
-        }
-    }
 }

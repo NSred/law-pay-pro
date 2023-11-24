@@ -92,15 +92,6 @@ public class BankService {
                 accountNumber
         );
         transactionService.insertTransactionIssuer(pccResponseDTO, userId);
-        /*
-        Object a = webClient.post()
-                .uri("http://localhost:8082/pcc/toAcquirerBank")
-                .bodyValue(pccResponseDTO)
-                .retrieve()
-                .toBodilessEntity()
-                .subscribe();
-
-         */
         return pccResponseDTO;
 
     }

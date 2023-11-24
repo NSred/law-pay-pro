@@ -39,15 +39,7 @@ public class BankService {
         // Block and get the result
         return responseMono.block();
     }
-    public void sendToAcquirerBank(PCCResponseDTO pccResponseDTO,String bankUrl) {
-        //Objekat ceo prosledjujem PCCRequestDTO dalje na sledecu aplikaciju
-        Object a = webClient.post()
-                .uri(bankUrl+"/bank/payAcquirer")
-                .bodyValue(pccResponseDTO)
-                .retrieve()
-                .toBodilessEntity()
-                .subscribe();
-    }
+
 
     public String getBankUrlId(String bankId) {
         Bank bank = this.bankRepository.getById(Long.parseLong(bankId));

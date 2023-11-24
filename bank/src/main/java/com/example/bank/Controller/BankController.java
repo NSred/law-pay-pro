@@ -82,23 +82,4 @@ public class BankController {
             return ResponseEntity.status(500).body(new PCCResponseDTO());
         }
     }
-    @PostMapping("/payAcquirer")
-    public ResponseEntity<String> depositMoneyAcquirer(@RequestBody PCCResponseDTO pccResponseDTO) {
-        try {
-            System.out.println("stigao si dovde al negde je greska");
-            if(accountService.depositMoney(
-                    accountService.getAccountId(pccResponseDTO.getAcquirerAccountNumber())
-                            ,pccResponseDTO.getAmount())){
-                //update baze transaction preusmeravanje na DTO za PSP i rokaj
-                System.out.println("greska");
-                bankService.sendBackToPSPPCC(pccResponseDTO);
-                System.out.println("USPEO SI");
-                return ResponseEntity.ok("Transaction successfull");
-            }else {
-                return ResponseEntity.badRequest().body("Not enough money");
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error transferring money: " + e.getMessage());
-        }
-    }
 }
