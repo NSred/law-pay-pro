@@ -48,7 +48,12 @@ export class PaymentMethodsComponent implements OnInit{
     }
     this.paymentService.processPayment(request).subscribe({
       next: res => {
-        this.redirect(res)
+        if (request.paymentType === PaymentType.CARD
+          || request.paymentType === PaymentType.PAY_PAL) {
+          this.redirect(res)
+          return;
+        }
+        console.log(res)
       }
     })
   }
