@@ -4,21 +4,23 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import rs.wepublishlaws.paymentserviceprovider.model.converters.JsonCollectionConverter;
 
 import java.io.Serializable;
+import java.util.List;
 
-@Entity(name = "merchants")
+@Entity(name = "subscriptions")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "merchants")
-public class Merchant implements Serializable {
+@Table(name = "subscriptions")
+public class Subscription implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private Long id;
-    @Column(unique = true)
     private String merchantId;
-    private String merchantPassword;
-    private String apiKey;
+    @Convert(converter = JsonCollectionConverter.class)
+    @Column(columnDefinition = "jsonb")
+    private List<String> paymentMethods;
 }

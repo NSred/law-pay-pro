@@ -37,7 +37,8 @@ public class PaymentServiceImpl implements PaymentService{
             case CRYPTO_CURRENCY -> QueueConstants.CRYPTO_SERVICE_QUEUE;
             default -> QueueConstants.CARD_SERVICE_QUEUE;
         };
-        return producer.sendAndReceive(destination,
+        return producer.sendAndReceive(
+                destination,
                 new PaymentMessage(merchant.getMerchantId(), merchant.getMerchantPassword(),
                         request.getAmount(), UUID.randomUUID(), LocalDateTime.now(),
                         successUrl, failedUrl, errorUrl),

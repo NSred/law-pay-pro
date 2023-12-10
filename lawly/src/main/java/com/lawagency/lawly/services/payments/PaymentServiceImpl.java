@@ -22,7 +22,7 @@ public class PaymentServiceImpl implements PaymentService{
         try{
             Offer offer = offerService.findOne(request.getOfferId());
             PspPaymentRequest pspRequest = PaymentMapper.mapToPspPaymentRequest(request, offer.getPrice());
-            return httpClientService.sendRequest(pspRequest);
+            return httpClientService.sendProcessPaymentRequest(pspRequest);
         } catch (Exception e){
             throw new ProccessPaymentException(e.getMessage());
         }

@@ -9,6 +9,9 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {PaymentService} from "../services/payment.service";
 import {PaymentDto, PaymentType} from "../requests/payment-requests";
 import {PaymentResponseDto} from "../responses/payment-response";
+import {AuthService} from "../../../shared/login-menu/auth/auth.service";
+import {User} from "../../../shared/model/user";
+import {SubscriptionService} from "../services/subscription.service";
 
 @Component({
   selector: 'app-payment-methods',
@@ -18,6 +21,8 @@ import {PaymentResponseDto} from "../responses/payment-response";
   styleUrl: './payment-methods.component.scss'
 })
 export class PaymentMethodsComponent implements OnInit{
+  private readonly subscriptionService = inject(SubscriptionService)
+  private readonly auth = inject(AuthService)
   private readonly paymentService = inject(PaymentService)
   private readonly route = inject(ActivatedRoute)
   private readonly router = inject(Router)
@@ -25,10 +30,23 @@ export class PaymentMethodsComponent implements OnInit{
   selectedValue: string = '';
   disabled: boolean = true;
   offerId: string | null = '';
+  private user : User | null = null;
+  subscriptions: string[] = [];
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.offerId = params.get('id');
+    })
+    this.user = this.auth.getLoggedInUser()
+    this.getPaymentMethods();
+  }
+
+  private getPaymentMethods() {
+    this.subscriptionService.getPaymentMethods().subscribe({
+      next: res => {
+        this.subscriptions = res
+        console.log(this.subscriptions)
+      }
     })
   }
 
@@ -44,7 +62,7 @@ export class PaymentMethodsComponent implements OnInit{
     let request: PaymentDto = {
       offerId: Number(this.offerId),
       paymentType: PaymentType[this.selectedValue as keyof typeof PaymentType],
-      userId: 1 //napravi methodu da dobavis ulogovanog usera
+      userId: this.user !== null ?  this.user.id : 1//napravi methodu da dobavis ulogovanog usera
     }
     this.paymentService.processPayment(request).subscribe({
       next: res => {
