@@ -10,7 +10,7 @@
           [(ngModel)]="selectedValue"
         >
           <div class="radio-button-wrapper">
-            <div class="item">
+            <div class="item" *ngIf="subscriptions.includes(paymentType.CREDIT_CARD)">
               <mat-radio-button [value]="paymentType.CREDIT_CARD">Pay with credit card</mat-radio-button>
               <img
                 [ngSrc]="'../../../../assets/images/atm-card64.png'"
@@ -20,7 +20,7 @@
                 priority
               />
             </div>
-            <div class="item">
+            <div class="item" *ngIf="subscriptions.includes(paymentType.PAY_PAL)">
               <mat-radio-button [value]="paymentType.PAY_PAL">Pay with PayPal</mat-radio-button>
               <img
                 [ngSrc]="'../../../../assets/images/paypal64.png'"
@@ -30,7 +30,7 @@
                 priority
               />
             </div>
-            <div class="item">
+            <div class="item" *ngIf="subscriptions.includes(paymentType.QR_CODE)">
               <mat-radio-button [value]="paymentType.QR_CODE">Pay with qr code</mat-radio-button>
               <img
                 [ngSrc]="'../../../../assets/images/qr-code64.png'"
@@ -40,7 +40,7 @@
                 priority
               />
             </div>
-            <div class="item">
+            <div class="item" *ngIf="subscriptions.includes(paymentType.CRYPTO_CURRENCY)">
               <mat-radio-button [value]="paymentType.CRYPTO_CURRENCY">Pay in crypto</mat-radio-button>
               <img
                 [ngSrc]="'../../../../assets/images/bitcoin64.png'"

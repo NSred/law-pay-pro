@@ -1,5 +1,6 @@
 package com.lawagency.lawly.security.util;
 
+import com.lawagency.lawly.model.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,13 +20,17 @@ public class TokenGenerator {
 
     private SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS512;
 
-    public String generate(String username) {
+    public String generate(User user) {
         return Jwts.builder()
                 .setIssuer(APP_NAME)
-                .setSubject(username)
+                .setSubject(user.getUsername())
                 .setAudience(generateAudience())
                 .setIssuedAt(new Date())
                 .setExpiration(generateExpirationDate())
+                .claim("userId", user.getId())
+                .claim("email", user.getEmail())
+                .claim("role", user.getRole().getName())
+                .claim("name", user.getName())
                 .signWith(SIGNATURE_ALGORITHM, SECRET).compact();
     }
 

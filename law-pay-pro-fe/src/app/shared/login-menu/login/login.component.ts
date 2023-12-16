@@ -8,6 +8,7 @@ import {LoginDto} from "../../model/login";
 import {Router} from "@angular/router";
 import {NavbarStateService} from "../../navbar-menu/state/navbar-state.service";
 import {HttpClientModule} from "@angular/common/http";
+import {AuthService} from "../auth/auth.service";
 
 export interface LoginForm {
   username: FormControl<string>;
@@ -22,6 +23,7 @@ export interface LoginForm {
   styleUrl: './login.component.scss'
 })
 export class LoginComponent implements OnInit{
+  private readonly auth = inject(AuthService)
   private readonly userService = inject(UserService)
   private readonly router = inject(Router)
   private readonly navbarState = inject(NavbarStateService)
@@ -43,7 +45,7 @@ export class LoginComponent implements OnInit{
     }
     this.userService.login(request).subscribe({
       next: res => {
-        console.log(res)
+        this.auth.setToken(res.accessToken)
         this.navbarState.updateNavbarVisibility(true);
         this.router.navigate(['']).then()
       }
