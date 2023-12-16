@@ -20,9 +20,10 @@ export class CryptoPaymentComponent implements OnInit{
 
   ngOnInit(): void {
     this.querySubscription = this.route.queryParams.subscribe(params => {
-      this.qrCode = params['qrCode'];
+      const base64String = params['qrCode'];
       this.paymentAddress = params['paymentAddress'];
-      generateQRCode(this.qrCode)
+      this.qrCode = `data:image/png;base64,${base64String}`;
+     // generateQRCode(this.qrCode)
     })
   }
 

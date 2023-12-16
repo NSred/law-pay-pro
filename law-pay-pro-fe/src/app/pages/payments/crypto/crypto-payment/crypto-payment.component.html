@@ -9,8 +9,11 @@
           [value]="paymentAddress"
           [label]="'Copy address'"
         />
-        <div class="qrcode">
+        <!-- <div class="qrcode">
           <canvas id="canvas"></canvas>
+        </div> -->
+        <div *ngIf="qrCode">
+          <img [src]="qrCode" alt="QR Code" class="enlarged-image">
         </div>
       </div>
     </div>

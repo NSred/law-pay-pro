@@ -68,16 +68,11 @@ public class PaymentService {
     public void sendNotification(final PaymentStatusNotify responseDto) throws Exception {
         ResponseEntity<PaymentStatusNotify> responseEntity;
         try {
-            responseEntity = restTemplate.postForEntity(
-                    httpConfig.paymentNotifyUrl() + String.format("/%s", responseDto.getPaymentId()),
-                    responseDto,
-                    PaymentStatusNotify.class
-            );
+            HttpEntity<PaymentStatusNotify> request = new HttpEntity<>(responseDto);
+            restTemplate.postForEntity(httpConfig.paymentNotifyUrl(), request, Void.class);
+
         } catch (final Exception exception) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
-        if (responseEntity.getStatusCodeValue() != 200) {
-            throw new ResponseStatusException(responseEntity.getStatusCode());
         }
     }
 
