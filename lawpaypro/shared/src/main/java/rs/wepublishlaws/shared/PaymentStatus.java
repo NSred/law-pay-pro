@@ -3,5 +3,7 @@ package rs.wepublishlaws.shared;
 public enum PaymentStatus {
     SUCCESS,
     FAIL,
-    CANCEL
+    CANCEL,
+    PENDING,
+    INITIATED
 }

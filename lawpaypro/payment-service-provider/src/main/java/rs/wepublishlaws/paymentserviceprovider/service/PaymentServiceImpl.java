@@ -30,7 +30,8 @@ public class PaymentServiceImpl implements PaymentService{
 
         Merchant merchant = merchantService.findMerchantByApiKey(apiKey);
         if (merchant == null)
-            return new PaymentResponse(errorUrl, null);
+//            return new PaymentResponse(errorUrl, null);
+            throw new RuntimeException();
         String destination = switch (request.getPaymentType()) {
             case QR_CODE -> QueueConstants.QRCODE_SERVICE_QUEUE;
             case PAY_PAL -> QueueConstants.PAYPAL_SERVICE_QUEUE;
