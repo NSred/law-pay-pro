@@ -5,6 +5,7 @@ import {AllOffersComponent} from "./pages/offers/all-offers/all-offers.component
 import {PaymentMethodsComponent} from "./pages/payments/payment-methods/payment-methods.component";
 import {SuccessComponent} from "./pages/payments/success/success.component";
 import {CancelComponent} from "./pages/payments/cancel/cancel.component";
+import {CryptoPaymentComponent} from "./pages/payments/crypto/crypto-payment/crypto-payment.component";
 
 export const routes: Routes = [
   {
@@ -34,5 +35,9 @@ export const routes: Routes = [
   {
     path: 'payment-cancelled',
     component: CancelComponent
-  }
+  },
+  {
+    path: 'crypto-payment',
+    component: CryptoPaymentComponent
+  },
 ];

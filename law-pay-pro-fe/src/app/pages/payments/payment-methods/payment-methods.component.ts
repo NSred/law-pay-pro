@@ -66,6 +66,15 @@ export class PaymentMethodsComponent implements OnInit{
     }
     this.paymentService.processPayment(request).subscribe({
       next: res => {
+        if (request.paymentType === PaymentType.CRYPTO_CURRENCY) {
+          this.router.navigate(['crypto-payment'], {
+            queryParams: {
+              qrCode: res.sdkParams.qrCode,
+              paymentAddress: res.sdkParams.paymentAddress
+            }
+          }).then();
+          return;
+        }
         if (request.paymentType === PaymentType.CARD
           || request.paymentType === PaymentType.PAY_PAL) {
           this.redirect(res)

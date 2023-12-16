@@ -1,0 +1,18 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="payment-method">
+      <div class="header">
+        <h2>Payment details</h2>
+      </div>
+      <div>
+        <app-labeled-input
+          [value]="paymentAddress"
+          [label]="'Copy address'"
+        />
+        <div class="qrcode">
+          <canvas id="canvas"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
