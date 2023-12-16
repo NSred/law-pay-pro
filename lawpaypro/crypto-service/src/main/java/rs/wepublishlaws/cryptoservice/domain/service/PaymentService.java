@@ -23,6 +23,7 @@ import rs.wepublishlaws.cryptoservice.domain.model.deposit.CoinspaidDepositReque
 import rs.wepublishlaws.cryptoservice.domain.model.deposit.CoinspaidDepositResponseDto;
 import org.springframework.web.client.RestTemplate;
 import rs.wepublishlaws.shared.messages.PaymentResponse;
+import rs.wepublishlaws.shared.messages.requests.PaymentStatusNotify;
 
 @Service
 @RequiredArgsConstructor
@@ -64,13 +65,13 @@ public class PaymentService {
         }
     }
 
-    public void sendNotification(final PaymentResponse prizmaResponseDto) throws Exception {
-        ResponseEntity<Object> responseEntity;
+    public void sendNotification(final PaymentStatusNotify responseDto) throws Exception {
+        ResponseEntity<PaymentStatusNotify> responseEntity;
         try {
             responseEntity = restTemplate.postForEntity(
-                    httpConfig.paymentNotifyUrl() + String.format("/%s", prizmaResponseDto.getPaymentId()),
-                    prizmaResponseDto,
-                    Object.class
+                    httpConfig.paymentNotifyUrl() + String.format("/%s", responseDto.getPaymentId()),
+                    responseDto,
+                    PaymentStatusNotify.class
             );
         } catch (final Exception exception) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);

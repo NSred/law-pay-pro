@@ -10,6 +10,7 @@ import rs.wepublishlaws.cryptoservice.adapter.mapper.CoinspaidMapper;
 import rs.wepublishlaws.cryptoservice.domain.model.callback.DepositCallbackResponseDto;
 import rs.wepublishlaws.cryptoservice.domain.service.PaymentService;
 import rs.wepublishlaws.shared.messages.PaymentResponse;
+import rs.wepublishlaws.shared.messages.requests.PaymentStatusNotify;
 
 @RestController
 @RequestMapping(path = "/crypto")
@@ -25,7 +26,7 @@ public class CoinspaidPaymentProcessorController {
     public ResponseEntity<Void> notify(
             @RequestBody final DepositCallbackResponseDto callbackResponseDto
     ) throws Exception {
-        final PaymentResponse response = coinspaidMapper.mapFromCallback(callbackResponseDto);
+        final PaymentStatusNotify response = coinspaidMapper.mapFromCallback(callbackResponseDto);
         paymentService.sendNotification(response);
         return ResponseEntity.ok().build();
     }

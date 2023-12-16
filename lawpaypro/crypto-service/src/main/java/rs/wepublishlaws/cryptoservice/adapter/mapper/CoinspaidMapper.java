@@ -11,6 +11,7 @@ import rs.wepublishlaws.shared.PaymentStatus;
 import rs.wepublishlaws.shared.SdkParamsDto;
 import rs.wepublishlaws.shared.messages.PaymentMessage;
 import rs.wepublishlaws.shared.messages.PaymentResponse;
+import rs.wepublishlaws.shared.messages.requests.PaymentStatusNotify;
 
 @Component
 public class CoinspaidMapper {
@@ -39,11 +40,11 @@ public class CoinspaidMapper {
 
             responseDto.setErrorCode(response.getErrorCode());
             responseDto.setErrorMessage(errorMessage);
-            responseDto.setStatus(PaymentStatus.FAIL);
+            //responseDto.setStatus(PaymentStatus.FAIL);
             return responseDto;
         } else {
             responseDto.setPaymentId(response.getData().getId().toString());
-            responseDto.setStatus(PaymentStatus.INITIATED);
+            //responseDto.setStatus(PaymentStatus.INITIATED);
             String qrCode = qrCodeGeneratorService.generateQRCodeImage(response.getData().getAddress(), request.amount.toString());
 
             final SdkParamsDto sdkParams = mapSdkParams(response, qrCode);
@@ -82,12 +83,12 @@ public class CoinspaidMapper {
         return response;
     }
 
-    public PaymentResponse mapFromCallback(final DepositCallbackResponseDto callbackResponseDto) {
-        final PaymentResponse responseDto = new PaymentResponse();
+    public PaymentStatusNotify mapFromCallback(final DepositCallbackResponseDto callbackResponseDto) {
+        final PaymentStatusNotify responseDto = new PaymentStatusNotify();
 //        responseDto.setAmount(callbackResponseDto.getCurrency_received().getAmount());
 //        responseDto.setCurrencyCode(callbackResponseDto.getCurrency_received().getCurrency());
         responseDto.setPaymentId(callbackResponseDto.getCrypto_address().getId().toString());
-        responseDto.setStatus(getStatusFromCallbackStatus(callbackResponseDto.getStatus()));
+        responseDto.setPaymentStatus(getStatusFromCallbackStatus(callbackResponseDto.getStatus()));
         return responseDto;
     }
 
