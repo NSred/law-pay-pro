@@ -21,6 +21,6 @@ public class Subscription implements Serializable {
     private Long id;
     private String merchantId;
     @Convert(converter = JsonCollectionConverter.class)
-    @Column(columnDefinition = "jsonb")
+    @Column(columnDefinition = "jsonb", name = "payment_methods")
     private List<String> paymentMethods;
 }
