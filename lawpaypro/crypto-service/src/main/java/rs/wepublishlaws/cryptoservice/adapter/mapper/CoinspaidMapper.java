@@ -2,6 +2,8 @@ package rs.wepublishlaws.cryptoservice.adapter.mapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import rs.wepublishlaws.cryptoservice.domain.model.callback.DepositCallbackResponseDto;
+import rs.wepublishlaws.cryptoservice.domain.model.callback.TransactionStatus;
 import rs.wepublishlaws.cryptoservice.domain.model.deposit.CoinspaidDepositRequestDto;
 import rs.wepublishlaws.cryptoservice.domain.model.deposit.CoinspaidDepositResponseDto;
 import rs.wepublishlaws.cryptoservice.domain.service.QRCodeGeneratorService;
@@ -13,6 +15,7 @@ import rs.wepublishlaws.shared.messages.PaymentResponse;
 @Component
 public class CoinspaidMapper {
 
+    @Autowired
     private QRCodeGeneratorService qrCodeGeneratorService;
 
     public CoinspaidDepositRequestDto mapToTransactionRequest(final PaymentMessage paymentMessage){
@@ -36,12 +39,12 @@ public class CoinspaidMapper {
 
             responseDto.setErrorCode(response.getErrorCode());
             responseDto.setErrorMessage(errorMessage);
-            responseDto.setStatus(PaymentStatus.FAILED);
+            responseDto.setStatus(PaymentStatus.FAIL);
             return responseDto;
         } else {
             responseDto.setPaymentId(response.getData().getId().toString());
             responseDto.setStatus(PaymentStatus.INITIATED);
-            String qrCode = qrCodeGeneratorService.generateQRCodeImage(response.getData().getAddress());
+            String qrCode = qrCodeGeneratorService.generateQRCodeImage(response.getData().getAddress(), request.amount.toString());
 
             final SdkParamsDto sdkParams = mapSdkParams(response, qrCode);
             responseDto.setSdkParams(sdkParams);
@@ -77,5 +80,36 @@ public class CoinspaidMapper {
         final PaymentResponse response = new PaymentResponse();
         response.setPaymentUrl(paymentMessage.errorUrl);
         return response;
+    }
+
+    public PaymentResponse mapFromCallback(final DepositCallbackResponseDto callbackResponseDto) {
+        final PaymentResponse responseDto = new PaymentResponse();
+//        responseDto.setAmount(callbackResponseDto.getCurrency_received().getAmount());
+//        responseDto.setCurrencyCode(callbackResponseDto.getCurrency_received().getCurrency());
+        responseDto.setPaymentId(callbackResponseDto.getCrypto_address().getId().toString());
+        responseDto.setStatus(getStatusFromCallbackStatus(callbackResponseDto.getStatus()));
+        return responseDto;
+    }
+
+    private static PaymentStatus getStatusFromCallbackStatus(final TransactionStatus callbackStatus) {
+        PaymentStatus status;
+        switch (callbackStatus) {
+            case confirmed:
+                status = PaymentStatus.SUCCESS;
+                break;
+            case not_confirmed:
+                status = PaymentStatus.PENDING;
+                break;
+            case pending:
+                status = PaymentStatus.PENDING;
+                break;
+            case cancelled:
+                status = PaymentStatus.FAIL;
+                break;
+            default:
+                status = PaymentStatus.CANCEL;
+                break;
+        }
+        return status;
     }
 }

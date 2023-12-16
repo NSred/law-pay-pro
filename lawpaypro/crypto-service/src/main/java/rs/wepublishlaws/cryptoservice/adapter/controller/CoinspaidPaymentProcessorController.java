@@ -6,7 +6,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import rs.wepublishlaws.cryptoservice.adapter.mapper.CoinspaidMapper;
+import rs.wepublishlaws.cryptoservice.domain.model.callback.DepositCallbackResponseDto;
 import rs.wepublishlaws.cryptoservice.domain.service.PaymentService;
+import rs.wepublishlaws.shared.messages.PaymentResponse;
 
 @RestController
 @RequestMapping(path = "/crypto")
@@ -15,12 +18,15 @@ public class CoinspaidPaymentProcessorController {
     @Autowired
     private PaymentService paymentService;
 
-//    @PostMapping("/notify")
-//    public ResponseEntity<Void> notify(
-//            @RequestBody final DepositCallbackResponseDto callbackResponseDto
-//    ) throws Exception {
-//        final PrizmaPaymentResponseDto prizmaResponseDto = coinspaidMapper.mapFromCallback(callbackResponseDto);
-//        paymentService.sendNotification(prizmaResponseDto);
-//        return ResponseEntity.ok().build();
-//    }
+    @Autowired
+    private CoinspaidMapper coinspaidMapper;
+
+    @PostMapping("/notify")
+    public ResponseEntity<Void> notify(
+            @RequestBody final DepositCallbackResponseDto callbackResponseDto
+    ) throws Exception {
+        final PaymentResponse response = coinspaidMapper.mapFromCallback(callbackResponseDto);
+        paymentService.sendNotification(response);
+        return ResponseEntity.ok().build();
+    }
 }

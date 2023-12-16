@@ -31,16 +31,16 @@ public class QRCodeGeneratorService {
         this.imageWidth = config.width();
     }
 
-    public String generateQRCodeImage(final String address) {
-        final BitMatrix bitMatrix = getBitMatrix(address);
+    public String generateQRCodeImage(final String address, final String amount) {
+        final BitMatrix bitMatrix = getBitMatrix(address, amount);
         final ByteArrayOutputStream pngOutputStream = getPngOutputStream(bitMatrix);
 
         return Base64.getEncoder().encodeToString(pngOutputStream.toByteArray());
     }
 
-    private BitMatrix getBitMatrix(final String address) {
+    private BitMatrix getBitMatrix(final String address, final String amount) {
         try {
-            String bitcoinURI = "bitcoin:" + address;
+            String bitcoinURI = "bitcoin:" + address + "?amount=" + amount;
             return qrCodeWriter.encode(bitcoinURI, BarcodeFormat.QR_CODE, imageWidth, imageHeight);
         } catch (final WriterException exception) {
             throw new QRCodeCreationException(String.format("Unable to encode payload %s to QR Code image matrix", address), exception);

@@ -13,15 +13,16 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.server.ResponseStatusException;
 import rs.wepublishlaws.cryptoservice.domain.configuration.CertConfig;
+import rs.wepublishlaws.cryptoservice.domain.configuration.HttpConfig;
 import rs.wepublishlaws.cryptoservice.domain.model.deposit.CoinspaidDepositRequestDto;
 import rs.wepublishlaws.cryptoservice.domain.model.deposit.CoinspaidDepositResponseDto;
 import org.springframework.web.client.RestTemplate;
+import rs.wepublishlaws.shared.messages.PaymentResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +33,7 @@ public class PaymentService {
     private final RestTemplate restTemplate;
     private final Gson gson;
     private final CertConfig certConfig;
+    private final HttpConfig httpConfig;
 
     public CoinspaidDepositResponseDto initiatePayment(
             final String apiUrl,
@@ -62,22 +64,21 @@ public class PaymentService {
         }
     }
 
-//    public void sendNotification(final PrizmaPaymentResponseDto prizmaResponseDto) throws Exception {
-//        final ResponseEntity<Object> responseEntity = this.externalCallDecorator.makeDecoratedCall(() -> {
-//            try {
-//                return restTemplate.postForEntity(
-//                        httpConfig.paymentProxyNotifyUrl() + String.format("/%s", prizmaResponseDto.getPaymentId()),
-//                        prizmaResponseDto,
-//                        Object.class
-//                );
-//            } catch (final Exception exception) {
-//                throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-//            }
-//        }, PAYMENT_PROXY_DECORATOR_NAME);
-//        if (responseEntity.getStatusCodeValue() != 200) {
-//            throw new ResponseStatusException(responseEntity.getStatusCode());
-//        }
-//    }
+    public void sendNotification(final PaymentResponse prizmaResponseDto) throws Exception {
+        ResponseEntity<Object> responseEntity;
+        try {
+            responseEntity = restTemplate.postForEntity(
+                    httpConfig.paymentNotifyUrl() + String.format("/%s", prizmaResponseDto.getPaymentId()),
+                    prizmaResponseDto,
+                    Object.class
+            );
+        } catch (final Exception exception) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        if (responseEntity.getStatusCodeValue() != 200) {
+            throw new ResponseStatusException(responseEntity.getStatusCode());
+        }
+    }
 
 
     private Map<String, String> prepareCoinsPaidDepositRequest(
