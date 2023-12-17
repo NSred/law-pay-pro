@@ -1,0 +1,22 @@
+@import "../../../../sass/variables";
+
+.error {
+  font-size: 0.7rem;
+  display: flex;
+  color: $cancel-color;
+  align-items: center;
+  padding: 0.2rem 0 0 0;
+}
+
+.error-text {
+  padding-top: 0.3rem;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.error-icon {
+  font-size: 0.6rem;
+  padding-right: 0.3rem;
+  white-space: nowrap;
+  padding-top: 0.3rem;
+}

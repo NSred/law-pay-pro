@@ -1,0 +1,38 @@
+@import "../../../../sass/variables";
+
+.button-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 0.3rem;
+}
+.button {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 0.7rem;
+  cursor: pointer;
+  background-color: var(--selection-color);
+  font-size: 14px;
+  border-radius: 30px;
+  border-width: 0;
+  padding: 0.8rem 1.2rem 0.8rem 1.2rem;
+  color: var(--secondary);
+  width: 100%;
+
+  &:hover {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    border-color: var(--text-color);
+    border-width: 0;
+    box-shadow: 0 0 0.6em $shadow-color-dark;
+    cursor: pointer;
+  }
+  &.is-red {
+    color: $cancel-color;
+  }
+  &:disabled {
+    background: $disabled-color;
+    cursor: not-allowed;
+  }
+}

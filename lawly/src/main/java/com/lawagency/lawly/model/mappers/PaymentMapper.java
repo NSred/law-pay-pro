@@ -6,7 +6,6 @@ import com.lawagency.lawly.model.enums.PaymentType;
 
 public class PaymentMapper {
     public static PspPaymentRequest mapToPspPaymentRequest(PaymentRequest request, double amount){
-        PaymentType type = PaymentType.valueOf(request.getPaymentType());
-        return new PspPaymentRequest(amount, type);
+        return new PspPaymentRequest(amount, request.getPaymentType());
     }
 }

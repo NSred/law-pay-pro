@@ -1,0 +1,53 @@
+<div class="login-wrapper">
+  <div class="container">
+    <div class="photo-wrapper">
+      <img
+        class="photo"
+        ngSrc="../../../../assets/images/payment-app.gif"
+        height="300"
+        width="400"
+        alt="logo"
+        priority
+      />
+    </div>
+    <div class="content">
+      <div>
+        <img
+          class="photo"
+          ngSrc="../../../../assets/images/wallet64.png"
+          height="64"
+          width="64"
+          alt="logo"
+          priority
+        />
+      </div>
+      <h2 class="headline">Merchant login</h2>
+      <div class="input-fields">
+        <app-input-field
+          class="field"
+          [control]="loginForm.controls.merchantId"
+          [placeholder]="'Merchant Id'"
+          [errors]="{required: 'This field is required'}"
+        />
+        <app-input-field
+          class="field"
+          [type]="'password'"
+          [control]="loginForm.controls.merchantPassword"
+          [placeholder]="'Password'"
+          [errors]="{required: 'This field is required'}"
+        />
+      </div>
+      <div class="login-button">
+        <app-button
+          class="field"
+          [info]="'Sign in'"
+          (onClick)="login()"
+        />
+      </div>
+      <span class="register-sentence">Don't have an account?&nbsp;&nbsp;
+        <b class="register-label" (click)="goToRegistrationPage()">Register now!</b>
+      </span>
+    </div>
+  </div>
+</div>
+

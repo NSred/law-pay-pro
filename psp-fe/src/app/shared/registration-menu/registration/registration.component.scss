@@ -1,0 +1,138 @@
+@import "../../../sass/variables";
+
+.login-wrapper {
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  height: 100%;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 0.8fr 0.7fr;
+  border-radius: 20px;
+  background-color: var(--primary-color);
+  height: 80dvh;
+  width: 50dvw;
+}
+
+.photo-wrapper {
+  background-color: #222529;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.photo {
+  align-items: center;
+  justify-content: center;
+  border-radius: 100px;
+}
+
+.content {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  flex-direction: column;
+  padding: 2rem;
+  gap: .5rem;
+}
+
+.headline {
+  font-weight: bolder;
+  color: var(--selection-color);
+  padding-bottom: 2rem;
+  padding-top: 1rem;
+}
+
+.input-fields {
+  display: flex;
+  flex-direction: column;
+}
+
+.field {
+  padding: 1rem;
+  width: 20rem;
+}
+
+.login-button {
+  padding-top: 2rem;
+  width: 18rem;
+}
+
+.register-sentence {
+  font-size: 12px;
+  text-underline: var(--selection-color);
+  text-underline-position: auto;
+}
+
+.register-label {
+  color: var(--selection-color);
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.api-key-field {
+  width: 100%;
+  padding: 1rem;
+}
+
+@media (max-width: 1300px) {
+  .container {
+    height: 80dvh; /* Increase container height if necessary */
+    width: 50dvw; /* Adjust the container width as needed */
+    display: flex; /* Use flexbox to manage inner containers */
+    flex-wrap: wrap; /* Allow items to wrap if needed */
+    align-content: flex-start; /* Align content to the top */
+  }
+
+  .photo-wrapper {
+    flex: 1 1 300px; /* Flex grow, shrink and basis */
+    max-width: 50%; /* Max width for photo wrapper */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  }
+
+  .photo {
+    max-width: 70%; /* Ensure the image is not bigger than its container */
+    height: auto; /* Maintain aspect ratio */
+  }
+
+  .content {
+    flex: 1 1 300px; /* Flex grow, shrink and basis */
+    max-width: 50%; /* Max width for content */
+    padding: 2rem; /* Adjust padding */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    display: flex; /* Use flexbox to manage layout */
+    flex-direction: column; /* Stack children vertically */
+    justify-content: center; /* Center items vertically */
+  }
+
+  .headline {
+    font-size: 1.1rem; /* Adjust headline font size if needed */
+    padding: 0;
+  }
+
+  .field {
+    width: 100%; /* Take full width of the parent */
+    padding: .4rem;
+  }
+
+  .login-button {
+    padding: 0;
+    width: 100%; /* Button to match the input fields width */
+  }
+
+  .register-sentence,
+  .register-label {
+    font-size: 0.8rem; /* Adjust font size to save space */
+    padding: 0;
+  }
+
+  .api-key-field {
+    padding: .4rem;
+  }
+}
