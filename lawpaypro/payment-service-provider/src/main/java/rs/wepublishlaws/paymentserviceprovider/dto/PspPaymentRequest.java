@@ -8,5 +8,5 @@ import rs.wepublishlaws.paymentserviceprovider.model.enums.PaymentType;
 @RequiredArgsConstructor
 public class PspPaymentRequest {
     private double amount;
-    private PaymentType paymentType;
+    private String paymentType;
 }

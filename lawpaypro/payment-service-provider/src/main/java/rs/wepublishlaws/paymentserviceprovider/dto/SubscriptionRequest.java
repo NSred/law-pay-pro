@@ -5,8 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SubscritionRequest {
-
+public class SubscriptionRequest {
+    private String merchantId;
     private String paymentMethod;
     private String subscriptionType;
 }

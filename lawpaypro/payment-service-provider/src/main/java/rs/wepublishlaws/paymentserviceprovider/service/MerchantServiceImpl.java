@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 import rs.wepublishlaws.paymentserviceprovider.model.Merchant;
 import rs.wepublishlaws.paymentserviceprovider.repository.MerchantRepository;
 
-import java.util.UUID;
-
 @Service
 public class MerchantServiceImpl implements MerchantService {
     private final MerchantRepository repository;

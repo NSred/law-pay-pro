@@ -1,0 +1,24 @@
+@import "../../../../sass/variables";
+
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  justify-content: center;
+}
+
+.input-field {
+  height: 2.5rem;
+  background-color: var(--secondary);
+  border-radius: 10px;
+  border-width: 0;
+  color: var(--text-color);
+  padding: .6rem .6rem .6rem .6rem;
+  outline: none;
+  &:disabled {
+    cursor: not-allowed;
+  }
+  &:hover {
+    box-shadow: 0 0 0.2em var(--text-color);
+  }
+}

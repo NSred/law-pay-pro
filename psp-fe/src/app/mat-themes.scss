@@ -1,0 +1,82 @@
+@use "@angular/material" as mat;
+
+$primary-dark-green: (
+  50: #e4e7ea,
+  100: #bcc3c9,
+  200: #8f9ca6,
+  300: #627482,
+  400: #222529,
+  500: #1f384c,
+  600: #1b3245,
+  700: #172b3c,
+  800: #122433,
+  900: #0a1724,
+  A100: #62acff,
+  A200: #2f91ff,
+  A400: #0077fb,
+  A700: #006be1,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  ),
+);
+$secondary-dark-green: (
+  50: #e0fdef,
+  100: #b3fbd8,
+  200: #80f8be,
+  300: #4df5a4,
+  400: #26f291,
+  500: #00f07d,
+  600: #00ee75,
+  700: #00ec6a,
+  800: #00e960,
+  900: #00e54d,
+  A100: #ffffff,
+  A200: #d9ffe3,
+  A400: #a6ffbe,
+  A700: #8cffab,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  ),
+);
+
+$dark-green-primary: mat.define-palette($primary-dark-green, 400);
+$dark-green-accent: mat.define-palette($secondary-dark-green, 500);
+$my-warn: mat.define-palette(mat.$red-palette, 900);
+
+$dark-blue-theme: mat.define-dark-theme(
+    (
+      color: (
+        primary: $dark-green-primary,
+        accent: $dark-green-accent,
+        warn: $my-warn,
+      ),
+      typography: mat.define-typography-config(),
+      density: 0,
+    )
+);

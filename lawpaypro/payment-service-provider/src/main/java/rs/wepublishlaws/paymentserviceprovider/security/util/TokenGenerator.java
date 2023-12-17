@@ -27,10 +27,8 @@ public class TokenGenerator {
                 .setAudience(generateAudience())
                 .setIssuedAt(new Date())
                 .setExpiration(generateExpirationDate())
-                .claim("userId", user.getId())
-                .claim("email", user.getMerchantId())
-//                .claim("role", user.getRole().getName())
-                .claim("name", user.getMerchantId())
+                .claim("id", user.getId())
+                .claim("merchant", user.getMerchantId())
                 .signWith(SIGNATURE_ALGORITHM, SECRET).compact();
     }
 
