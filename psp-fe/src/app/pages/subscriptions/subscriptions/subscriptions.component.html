@@ -1,0 +1,16 @@
+<div class="wrapper" *ngIf="subscriptions$ | async as subscriptions">
+  <div class="container">
+    <div class="header">
+      <h2>Available subscriptions</h2>
+    </div>
+    <div class="subscriptions">
+      <div class="sub-card" *ngFor="let sub of subscriptions">
+        <app-subscription-card
+          [subscription]="sub"
+          (onSub)="subscribe($event)"
+          (onUnSub)="unsubscribe($event)"
+        />
+      </div>
+    </div>
+  </div>
+</div>

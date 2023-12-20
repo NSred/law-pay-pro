@@ -1,0 +1,39 @@
+<mat-toolbar class="container-nav" color="primary">
+  <div class="logo" (click)="goToHome()">
+    <div>
+      <img
+        ngSrc="../../../../assets/images/wallet.png"
+        height="70"
+        width="70"
+        alt="logo"
+        priority
+      />
+    </div>
+    <div>
+      <label class="logo-label">PSP</label>
+    </div>
+  </div>
+  <div class="navbar-elements">
+    <app-navbar-button
+      *ngIf="isLoggedIn()"
+      [iconName]="'group'"
+      (click)="goToSubscriptions()"
+    >Subscriptions</app-navbar-button>
+    <app-navbar-button
+      *ngIf="!isLoggedIn()"
+      (click)="goToRegistration()"
+      [iconName]="'group'">Registration</app-navbar-button>
+    <app-navbar-button
+      *ngIf="isLoggedIn()"
+      [iconName]="'group'"
+      (click)="logout()"
+    >Logout</app-navbar-button>
+    <app-navbar-button
+      *ngIf="!isLoggedIn()"
+      [iconName]="'group'"
+      (click)="goToLogin()"
+    >Login
+    </app-navbar-button>
+  </div>
+</mat-toolbar>
+

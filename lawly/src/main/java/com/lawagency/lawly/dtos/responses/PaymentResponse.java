@@ -10,4 +10,7 @@ import lombok.RequiredArgsConstructor;
 public class PaymentResponse {
     private String paymentUrl;
     private String paymentId;
+    private SdkParamsDto sdkParams;
+    private String errorMessage;
+    private String errorCode;
 }

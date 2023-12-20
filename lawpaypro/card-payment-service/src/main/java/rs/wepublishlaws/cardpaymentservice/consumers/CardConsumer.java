@@ -28,7 +28,6 @@ public class CardConsumer {
     public void receiveMessage(final Message message) throws JMSException {
         MessageConverter converter = jmsTemplate.getMessageConverter();
         PaymentMessage paymentMessage = (PaymentMessage) Objects.requireNonNull(converter).fromMessage(message);
-        System.out.println(paymentMessage);
 
         try{
             //HTTP poziv Bank aplikacije koja vraca Url string

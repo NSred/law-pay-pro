@@ -1,0 +1,26 @@
+<div class="card-wrapper">
+  <div class="name">
+    {{subscription.name}}
+  </div>
+  <div class="img">
+    <img
+      [ngSrc]="subscription.imageUrl"
+      height="128"
+      width="128"
+      alt="logo"
+      priority
+    />
+  </div>
+  <div class="button" *ngIf="subscription.subscribed">
+      <app-button
+        [info]="'Unsubscribe'"
+        (onClick)="unsubscribe(subscription)"
+      />
+  </div>
+  <div class="button" *ngIf="!subscription.subscribed">
+    <app-button
+      [info]="'Subscribe'"
+      (onClick)="subscribe(subscription)"
+    />
+  </div>
+</div>

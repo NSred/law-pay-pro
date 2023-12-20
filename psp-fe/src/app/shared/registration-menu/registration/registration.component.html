@@ -1,0 +1,65 @@
+<div class="login-wrapper">
+  <div class="container">
+    <div class="photo-wrapper">
+      <img
+        class="photo"
+        ngSrc="../../../../assets/images/payment-app.gif"
+        height="300"
+        width="400"
+        alt="logo"
+        priority
+      />
+    </div>
+    <div class="content">
+      <div>
+        <img
+          class="photo"
+          ngSrc="../../../../assets/images/wallet64.png"
+          height="64"
+          width="64"
+          alt="logo"
+          priority
+        />
+      </div>
+      <h2 class="headline">Registration</h2>
+      <div class="input-fields">
+        <app-input-field
+          class="field"
+          [control]="registrationForm.controls.merchantId"
+          [placeholder]="'Merchant Id'"
+          [errors]="{required: 'This field is required'}"
+        />
+        <app-input-field
+          class="field"
+          [type]="'password'"
+          [control]="registrationForm.controls.merchantPassword"
+          [placeholder]="'Password'"
+          [errors]="{required: 'This field is required'}"
+        />
+      </div>
+      <div class="login-button" *ngIf="!hideRegisterButton">
+        <app-button
+          class="field"
+          [info]="'Register'"
+          (click)="register()"
+        />
+      </div>
+      <ng-container *ngIf="apiKey$ | async as apiKey">
+        <div class="api-key-field">
+          <app-labeled-input
+            [label]="'Your API Key'"
+            [value]="apiKey"
+          />
+        </div>
+        <div class="login-button" *ngIf="hideRegisterButton">
+          <app-button
+            class="field"
+            [info]="'Proceed to login'"
+            (click)="goToLogin()"
+          />
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
+

@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 import rs.wepublishlaws.paymentserviceprovider.model.Merchant;
 import rs.wepublishlaws.paymentserviceprovider.repository.MerchantRepository;
 
-import java.util.UUID;
-
 @Service
 public class MerchantServiceImpl implements MerchantService {
     private final MerchantRepository repository;
@@ -32,6 +30,11 @@ public class MerchantServiceImpl implements MerchantService {
 
     @Override
     public Merchant findMerchantByApiKey(String apiKey) { return this.repository.findMerchantByApiKey(apiKey);}
+
+    @Override
+    public Merchant findMerchantByMerchantId(String merchantId) {
+        return this.repository.findMerchantByMerchantId(merchantId);
+    }
 
     private void save(String merchantId, String merchantPassword, String apiKey) {
         Merchant merchant = new Merchant();
