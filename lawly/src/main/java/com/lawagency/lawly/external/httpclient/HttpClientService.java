@@ -1,7 +1,6 @@
 package com.lawagency.lawly.external.httpclient;
 
-import com.lawagency.lawly.dtos.responses.GetPaymentMethodsResponse;
-import com.lawagency.lawly.dtos.responses.PaymentResponse;
+import com.lawagency.lawly.dtos.responses.*;
 import com.lawagency.lawly.external.common.PspPaymentRequest;
 import com.lawagency.lawly.handler.exceptions.HttpClientException;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +20,57 @@ public class HttpClientService {
     private String pspUrl;
     @Value("${lawly.psp-api-key}")
     private String apiKey;
+
+    public boolean cancelSub(UpdatePayPalSubRequest request) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("API-Key", apiKey);
+            HttpEntity<UpdatePayPalSubRequest> message = new HttpEntity<>(request, headers);
+            String url = pspUrl + "/payments/pay-pal-subs/cancel";
+            ResponseEntity<Boolean> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.PUT,
+                    message,
+                    Boolean.class);
+            return Boolean.TRUE.equals(response.getBody());
+        } catch (Exception e){
+            throw new HttpClientException(e.getMessage());
+        }
+    }
+
+    public boolean updateSub(UpdatePayPalSubRequest request) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("API-Key", apiKey);
+            HttpEntity<UpdatePayPalSubRequest> message = new HttpEntity<>(request, headers);
+            String url = pspUrl + "/payments/pay-pal-subs";
+            ResponseEntity<Boolean> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.PUT,
+                    message,
+                    Boolean.class);
+            return Boolean.TRUE.equals(response.getBody());
+        } catch (Exception e){
+            throw new HttpClientException(e.getMessage());
+        }
+    }
+
+    public GetPayPalSubResponse getPayPalSub(GetPayPalSubRequest request) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("API-Key", apiKey);
+            HttpEntity<GetPayPalSubRequest> message = new HttpEntity<>(request, headers);
+            String url = pspUrl + "/payments/pay-pal-subs";
+            ResponseEntity<GetPayPalSubResponse> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.POST,
+                    message,
+                    GetPayPalSubResponse.class);
+            return response.getBody();
+        } catch (Exception e){
+            throw new HttpClientException(e.getMessage());
+        }
+    }
 
     public PaymentResponse sendProcessPaymentRequest(PspPaymentRequest request) {
         try {

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class OfferServiceImpl implements OfferService{
@@ -20,5 +21,5 @@ public class OfferServiceImpl implements OfferService{
         return repository.findAll();
     }
 
-    public Offer findOne(Long id) {return repository.findOne(id);}
+    public Offer findOne(UUID id) {return repository.findOne(id);}
 }
