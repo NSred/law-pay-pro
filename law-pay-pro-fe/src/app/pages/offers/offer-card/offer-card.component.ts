@@ -11,7 +11,7 @@ import {ButtonComponent} from "../../../shared/components/buttons/button/button.
   styleUrl: './offer-card.component.scss'
 })
 export class OfferCardComponent {
-  @Input() offer: Offer = {id: 0, name: '', price: 0};
+  @Input() offer: Offer = {id: '0', name: '', price: 0};
   @Output() onBuy: EventEmitter<Offer> = new EventEmitter<Offer>();
 
   buy(offer: Offer) {

@@ -60,7 +60,7 @@ export class PaymentMethodsComponent implements OnInit{
 
   makePaymentRequest() {
     let request: PaymentDto = {
-      offerId: Number(this.offerId),
+      offerId: this.offerId ? this.offerId : '9cca5e41-39a0-4be9-9d11-c605a32703a4',
       paymentType: PaymentType[this.selectedValue as keyof typeof PaymentType],
       userId: this.user !== null ?  this.user.id : 1//napravi methodu da dobavis ulogovanog usera
     }
