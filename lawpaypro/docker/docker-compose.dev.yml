@@ -15,6 +15,20 @@ services:
       - psp-data:/var/lib/postgresql/data
     networks:
       psp-net:
+  paypal_db:
+    image: postgres
+    container_name: paypal-db
+    restart: always
+    ports:
+      - "5402:5432"
+    environment:
+      POSTGRES_DB: paypal-db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: user
+    volumes:
+      - paypal-data:/var/lib/postgresql/data
+    networks:
+      paypal-net:
   psp-activemq:
     image: rmohr/activemq
     ports:
@@ -33,8 +47,12 @@ services:
 networks:
   psp-net:
     driver: bridge
+  paypal-net:
+    driver: bridge
 volumes:
   psp-data:
+    driver: local
+  paypal-data:
     driver: local
   psp-activemq-data:
     driver: local

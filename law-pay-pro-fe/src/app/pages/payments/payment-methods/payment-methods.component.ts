@@ -75,12 +75,18 @@ export class PaymentMethodsComponent implements OnInit{
           }).then();
           return;
         }
-        if (request.paymentType === PaymentType.CARD
-          || request.paymentType === PaymentType.PAY_PAL) {
+        if (request.paymentType === PaymentType.PAY_PAL){
+          this.router.navigate(['paypal-payment/' + this.offerId], {
+            queryParams: {
+              paymentUrl: res.paymentUrl
+            }
+          }).then()
+          return;
+        }
+        if (request.paymentType === PaymentType.CARD) {
           this.redirect(res)
           return;
         }
-        console.log(res)
       }
     })
   }
