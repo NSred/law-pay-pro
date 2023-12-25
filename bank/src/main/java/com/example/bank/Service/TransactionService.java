@@ -1,8 +1,6 @@
 package com.example.bank.Service;
 
-import com.example.bank.DTO.PCCRequestDTO;
-import com.example.bank.DTO.PCCResponseDTO;
-import com.example.bank.DTO.PaymentDTO;
+import com.example.bank.DTO.*;
 import com.example.bank.Model.Enum.Status;
 import com.example.bank.Model.Transaction;
 import com.example.bank.Repository.MerchantRepository;
@@ -51,6 +49,20 @@ public class TransactionService {
 
         transactionRepository.save(transaction);
     }
+    public void insertTransactionAcquirerQR(PCCRequestQRDTO pccRequestQRDTO){
+        Transaction transaction = transactionRepository.findByPaymentId(pccRequestQRDTO.getPaymentId()).orElse(null);
+
+        transaction.setAmount(pccRequestQRDTO.getAmount());
+        transaction.setMerchantOrderId(pccRequestQRDTO.getMerchantOrderId());
+        transaction.setMerchantTimestamp(pccRequestQRDTO.getMerchantTimestamp());
+        transaction.setAcquirerOrderId(pccRequestQRDTO.getAcquirerOrderId());
+        transaction.setAcquirerTimestamp(pccRequestQRDTO.getAcquirerTimestamp());
+        transaction.setStatus(Status.PENDING);
+        transaction.setPaymentId(pccRequestQRDTO.getPaymentId());
+        transaction.setAcquirerAccountNumber(pccRequestQRDTO.getAcquirerAccountNumber());
+
+        transactionRepository.save(transaction);
+    }
     public void insertTransactionIssuer(PCCResponseDTO pccResponseDTO, Long userId){
         Transaction transaction = new Transaction();
 
@@ -69,7 +81,24 @@ public class TransactionService {
 
         transactionRepository.save(transaction);
     }
+    public void insertTransactionIssuerQR(PCCResponseQRDTO pccResponseQRDTO, Long userId){
+        Transaction transaction = new Transaction();
 
+        transaction.setAmount(pccResponseQRDTO.getAmount());
+        transaction.setMerchantOrderId(pccResponseQRDTO.getMerchantOrderId());
+        transaction.setMerchantTimestamp(pccResponseQRDTO.getMerchantTimestamp());
+        transaction.setAcquirerOrderId(pccResponseQRDTO.getAcquirerOrderId());
+        transaction.setAcquirerTimestamp(pccResponseQRDTO.getAcquirerTimestamp());
+        transaction.setStatus(Status.PENDING);
+        transaction.setPaymentId(pccResponseQRDTO.getPaymentId());
+        transaction.setAcquirerAccountNumber(pccResponseQRDTO.getAcquirerAccountNumber());
+        transaction.setUser(userRepository.getById(userId));
+        transaction.setIssuerOrderId(pccResponseQRDTO.getIssuerOrderId());
+        transaction.setIssuerTimestamp(pccResponseQRDTO.getIssuerTimestamp());
+        transaction.setIssuerAccountNumber(pccResponseQRDTO.getIssuerAccountNumber());
+
+        transactionRepository.save(transaction);
+    }
 
     public void updateTransaction(PCCResponseDTO pccResponseDTO) {
         Transaction transaction = transactionRepository.findByPaymentId(pccResponseDTO.getPaymentId()).orElse(null);
@@ -77,6 +106,15 @@ public class TransactionService {
         transaction.setIssuerOrderId(pccResponseDTO.getIssuerOrderId());
         transaction.setIssuerTimestamp(pccResponseDTO.getIssuerTimestamp());
         transaction.setIssuerAccountNumber(pccResponseDTO.getIssuerAccountNumber());
+
+        transactionRepository.save(transaction);
+    }
+    public void updateTransactionQR(PCCResponseQRDTO pccResponseQRDTO) {
+        Transaction transaction = transactionRepository.findByPaymentId(pccResponseQRDTO.getPaymentId()).orElse(null);
+        transaction.setStatus(Status.SUCCESSFUL);
+        transaction.setIssuerOrderId(pccResponseQRDTO.getIssuerOrderId());
+        transaction.setIssuerTimestamp(pccResponseQRDTO.getIssuerTimestamp());
+        transaction.setIssuerAccountNumber(pccResponseQRDTO.getIssuerAccountNumber());
 
         transactionRepository.save(transaction);
     }

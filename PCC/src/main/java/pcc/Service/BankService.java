@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import pcc.DTO.PCCRequestDTO;
+import pcc.DTO.PCCRequestQRDTO;
 import pcc.DTO.PCCResponseDTO;
+import pcc.DTO.PCCResponseQRDTO;
 import pcc.Model.Bank;
 import pcc.Repository.BankRepository;
 import reactor.core.publisher.Mono;
@@ -39,15 +41,17 @@ public class BankService {
         // Block and get the result
         return responseMono.block();
     }
-    public void sendToAcquirerBank(PCCResponseDTO pccResponseDTO,String bankUrl) {
-        //Objekat ceo prosledjujem PCCRequestDTO dalje na sledecu aplikaciju
-        Object a = webClient.post()
-                .uri(bankUrl+"/bank/payAcquirer")
-                .bodyValue(pccResponseDTO)
+    public PCCResponseQRDTO sendToIssuerBankQR(PCCRequestQRDTO pccRequestQRDTO, String bankUrl) {
+        Mono<PCCResponseQRDTO> responseMono = webClient.post()
+                .uri(bankUrl + "/bank/payIssuerQR")
+                .bodyValue(pccRequestQRDTO)
                 .retrieve()
-                .toBodilessEntity()
-                .subscribe();
+                .bodyToMono(PCCResponseQRDTO.class);
+
+        // Block and get the result
+        return responseMono.block();
     }
+
 
     public String getBankUrlId(String bankId) {
         Bank bank = this.bankRepository.getById(Long.parseLong(bankId));
