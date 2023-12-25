@@ -87,6 +87,15 @@ export class PaymentMethodsComponent implements OnInit{
           this.redirect(res)
           return;
         }
+        if (request.paymentType === PaymentType.QR_CODE) {
+          this.router.navigate(['qr-code-payment/' + this.offerId], {
+            queryParams: {
+              qrCode: res.sdkParams.qrCode,
+              paymentId: res.paymentId
+            }
+          }).then();
+          return;
+        }
       }
     })
   }

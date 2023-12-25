@@ -1,17 +1,12 @@
 package rs.wepublishlaws.paymentserviceprovider.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import rs.wepublishlaws.paymentserviceprovider.dto.PspPaymentRequest;
 import rs.wepublishlaws.paymentserviceprovider.service.PaymentService;
-import rs.wepublishlaws.shared.GetPayPalSubRequest;
-import rs.wepublishlaws.shared.GetPayPalSubResponse;
-import rs.wepublishlaws.shared.UpdatePayPalSubRequest;
+import rs.wepublishlaws.shared.*;
 import rs.wepublishlaws.shared.messages.PaymentResponse;
 
 @RestController
@@ -78,6 +73,26 @@ public class PaymentController {
                     message,
                     Boolean.class);
             res = Boolean.TRUE.equals(response.getBody());
+        } catch (Exception e){
+            throw new RuntimeException(e.getMessage());
+        }
+        return ResponseEntity.ok(res);
+    }
+
+    @PostMapping("/pay-qr")
+    public ResponseEntity<QrCodeResponseDto> payQr(@RequestBody QrCodeRequestDto request) {
+        QrCodeResponseDto res;
+        try {
+            request.setAccountNumber("432423");
+            HttpHeaders headers = new HttpHeaders();
+            HttpEntity<QrCodeRequestDto> message = new HttpEntity<>(request, headers);
+            String url = "http://localhost:8060/bank/payQR";
+            ResponseEntity<QrCodeResponseDto> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.POST,
+                    message,
+                    QrCodeResponseDto.class);
+            res = response.getBody();
         } catch (Exception e){
             throw new RuntimeException(e.getMessage());
         }

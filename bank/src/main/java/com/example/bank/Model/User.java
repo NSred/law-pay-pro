@@ -1,8 +1,11 @@
 package com.example.bank.Model;
 
 import jakarta.persistence.*;
+import lombok.Data;
+
 import java.util.List;
 
+@Data
 @Entity
 @Table(name = "bank_user")
 public class User {

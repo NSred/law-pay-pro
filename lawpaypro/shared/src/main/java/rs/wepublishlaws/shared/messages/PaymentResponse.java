@@ -12,7 +12,6 @@ import rs.wepublishlaws.shared.SdkParamsDto;
 public class PaymentResponse {
     private String paymentUrl;
     private String paymentId;
-//    private PaymentStatus status;
     private SdkParamsDto sdkParams;
     private String errorMessage;
     private String errorCode;

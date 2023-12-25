@@ -1,10 +1,7 @@
 package com.lawagency.lawly.controllers;
 
 import com.lawagency.lawly.dtos.PaymentRequest;
-import com.lawagency.lawly.dtos.responses.GetPayPalSubRequest;
-import com.lawagency.lawly.dtos.responses.GetPayPalSubResponse;
-import com.lawagency.lawly.dtos.responses.PaymentResponse;
-import com.lawagency.lawly.dtos.responses.UpdatePayPalSubRequest;
+import com.lawagency.lawly.dtos.responses.*;
 import com.lawagency.lawly.services.payments.PaymentService;
 import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +19,12 @@ public class PaymentController {
     //@PreAuthorize("hasRole('USER')")
     public ResponseEntity<PaymentResponse> processPayment(@RequestBody PaymentRequest request) {
         PaymentResponse response = paymentService.processPayment(request);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/pay-qr")
+    public ResponseEntity<QrCodeResponseDto> payQr(@RequestBody QrCodeRequestDto request) {
+        QrCodeResponseDto response = paymentService.payQr(request);
         return ResponseEntity.ok(response);
     }
 

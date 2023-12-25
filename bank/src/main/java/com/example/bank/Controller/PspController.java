@@ -27,7 +27,7 @@ public class PspController {
     }
     @PostMapping("/process-payment-qr")
     public ResponseEntity<?> processPaymentQR(@RequestBody PaymentDTO paymentDTO) throws IOException, WriterException {
-        PaymentResponseQR response = pspService.processPaymentQR(paymentDTO);
+        PaymentResponse response = pspService.processPaymentQR(paymentDTO);
         return ResponseEntity.ok(response);
     }
 }

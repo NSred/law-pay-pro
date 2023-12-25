@@ -7,6 +7,8 @@ import rs.wepublishlaws.buildingblocks.IProducer;
 import rs.wepublishlaws.paymentserviceprovider.dto.PspPaymentRequest;
 import rs.wepublishlaws.paymentserviceprovider.model.Merchant;
 import rs.wepublishlaws.paymentserviceprovider.model.PaymentMethodService;
+import rs.wepublishlaws.shared.QrCodeRequestDto;
+import rs.wepublishlaws.shared.QrCodeResponseDto;
 import rs.wepublishlaws.shared.messages.PaymentMessage;
 import rs.wepublishlaws.shared.messages.PaymentResponse;
 

@@ -3,28 +3,23 @@ package com.example.bank.Service;
 import com.example.bank.DTO.PSPResponseDTO;
 import com.example.bank.DTO.PaymentDTO;
 import com.example.bank.DTO.responses.PaymentResponse;
-import com.example.bank.DTO.responses.PaymentResponseQR;
+import com.example.bank.DTO.responses.SdkParamsDto;
 import com.example.bank.Model.Enum.Url;
-import lombok.RequiredArgsConstructor;
-import org.apache.commons.codec.binary.Base64;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
-
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
-
 import java.util.UUID;
 
 @Service
@@ -46,9 +41,9 @@ public class PspService {
         if (isValidMerchant){
             String paymentId = UUID.randomUUID().toString();
             transactionService.createBaseTransaction(paymentDTO, paymentId);
-            return new PaymentResponse(paymentUrl, paymentId);
+            return new PaymentResponse(paymentUrl, paymentId, null, null, null);
         }
-        return new PaymentResponse(failUrl, null);
+        return new PaymentResponse(failUrl, null, null, null, null);
     }
     public PSPResponseDTO response(Url url){
         if(url==Url.SUCCESSFUL)
@@ -60,7 +55,7 @@ public class PspService {
 
     }
 
-    public PaymentResponseQR processPaymentQR(PaymentDTO paymentDTO) throws IOException, WriterException {
+    public PaymentResponse processPaymentQR(PaymentDTO paymentDTO) throws IOException, WriterException {
         boolean isValidMerchant  = merchantService.existsByMerchantId(paymentDTO.getMerchantId());
         if (isValidMerchant){
             String paymentId = UUID.randomUUID().toString();
@@ -87,7 +82,7 @@ public class PspService {
             String K = "PR";
             String V = "01";
             String C = "1";
-            String R = "123-9876543210-12";
+            String R = "12345";
             String N = "JP EPS BEOGRAD, BALKANSKA 13";
             String I = "RSD3596,13";
             String P = "MRĐO MAČKATOVIĆ, ŽUPSKA 13, BEOGRAD 6";
@@ -98,9 +93,11 @@ public class PspService {
             String jsonData = generateJson(K, V, C, R, N, I, P, SF, S, RO);
             byte[] qrCode = generateQRCode(jsonData);
             String base64QRCode = Base64.encodeBase64String(qrCode);
-            return new PaymentResponseQR(paymentUrl, paymentId,base64QRCode);
+            final SdkParamsDto sdkParamsDto = new SdkParamsDto();
+            sdkParamsDto.setQrCode(base64QRCode);
+            return new PaymentResponse(paymentUrl, paymentId, sdkParamsDto, null, null);
         }
-        return new PaymentResponseQR(failUrl, null,null);
+        return new PaymentResponse(failUrl, null,null, null, null);
     }
 
     private static String generateJson(String K, String V, String C, String R, String N, String I, String P, String SF, String S, String RO) {

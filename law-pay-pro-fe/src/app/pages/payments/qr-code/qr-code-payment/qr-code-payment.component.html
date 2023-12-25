@@ -1,0 +1,28 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="payment-method">
+      <div class="header">
+        <h2>Payment details</h2>
+      </div>
+      <div>
+        <div *ngIf="qrCode">
+          <img [src]="qrCode" alt="QR Code" class="enlarged-image">
+        </div>
+        <div class="buttons">
+          <div class="button">
+            <app-button
+              [info]="'< Back'"
+              (click)="goBack()"
+            />
+          </div>
+          <div class="button">
+            <app-button
+              [info]="'Confirm payment'"
+              (click)="confirmPayment()"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

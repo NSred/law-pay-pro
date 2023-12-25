@@ -7,6 +7,7 @@ import {SuccessComponent} from "./pages/payments/success/success.component";
 import {CancelComponent} from "./pages/payments/cancel/cancel.component";
 import {CryptoPaymentComponent} from "./pages/payments/crypto/crypto-payment/crypto-payment.component";
 import {PaypalMethodsComponent} from "./pages/payments/paypal/paypal-methods/paypal-methods.component";
+import {QrCodePaymentComponent} from "./pages/payments/qr-code/qr-code-payment/qr-code-payment.component";
 
 export const routes: Routes = [
   {
@@ -45,4 +46,8 @@ export const routes: Routes = [
     path: 'paypal-payment/:id',
     component: PaypalMethodsComponent
   },
+  {
+    path: 'qr-code-payment/:id',
+    component: QrCodePaymentComponent
+  }
 ];

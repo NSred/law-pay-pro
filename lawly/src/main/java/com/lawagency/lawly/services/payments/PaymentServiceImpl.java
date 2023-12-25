@@ -1,10 +1,7 @@
 package com.lawagency.lawly.services.payments;
 
 import com.lawagency.lawly.dtos.PaymentRequest;
-import com.lawagency.lawly.dtos.responses.GetPayPalSubRequest;
-import com.lawagency.lawly.dtos.responses.GetPayPalSubResponse;
-import com.lawagency.lawly.dtos.responses.PaymentResponse;
-import com.lawagency.lawly.dtos.responses.UpdatePayPalSubRequest;
+import com.lawagency.lawly.dtos.responses.*;
 import com.lawagency.lawly.external.common.PspPaymentRequest;
 import com.lawagency.lawly.external.httpclient.HttpClientService;
 import com.lawagency.lawly.handler.exceptions.ProccessPaymentException;
@@ -44,5 +41,10 @@ public class PaymentServiceImpl implements PaymentService{
     @Override
     public boolean cancelSub(UpdatePayPalSubRequest request) {
         return httpClientService.cancelSub(request);
+    }
+
+    @Override
+    public QrCodeResponseDto payQr(QrCodeRequestDto request) {
+        return httpClientService.payQr(request);
     }
 }

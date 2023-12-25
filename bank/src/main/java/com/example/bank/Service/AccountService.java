@@ -92,6 +92,6 @@ public class AccountService {
 
     public Long getAccountId(String acquirerAccountNumber) {
         Account account = accountRepository.findByAccountNumber(acquirerAccountNumber).orElse(null);
-        return account.getAccountId();
+        return account.getUser().getUserId();
     }
 }

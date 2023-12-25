@@ -21,6 +21,20 @@ export interface UpdatePayPalSubRequest {
   subscriptionId: string
 }
 
+export interface PayQrRequest {
+  qrCode: string;
+  paymentId: string;
+  accountNumber: string;
+}
+
+export interface PayQrResponse {
+  url: string;
+  acquirerOrderId: string;
+  acquirerTimestamp: string;
+  merchantOrderId: string;
+  paymentId: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -44,5 +58,9 @@ export class PaymentService {
 
   cancelSub(request: UpdatePayPalSubRequest): Observable<boolean> {
     return this.httpClient.put<boolean>(this.baseUrl + "/payPalSubs/cancel", request)
+  }
+
+  payQr(request: PayQrRequest): Observable<PayQrResponse> {
+    return this.httpClient.post<PayQrResponse>(this.baseUrl + "/pay-qr", request)
   }
 }

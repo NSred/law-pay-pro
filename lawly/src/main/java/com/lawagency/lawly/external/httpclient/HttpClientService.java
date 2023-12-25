@@ -21,6 +21,23 @@ public class HttpClientService {
     @Value("${lawly.psp-api-key}")
     private String apiKey;
 
+    public QrCodeResponseDto payQr(QrCodeRequestDto request) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("API-Key", apiKey);
+            HttpEntity<QrCodeRequestDto> message = new HttpEntity<>(request, headers);
+            String url = pspUrl + "/payments/pay-qr";
+            ResponseEntity<QrCodeResponseDto> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.POST,
+                    message,
+                    QrCodeResponseDto.class);
+            return response.getBody();
+        } catch (Exception e){
+            throw new HttpClientException(e.getMessage());
+        }
+    }
+
     public boolean cancelSub(UpdatePayPalSubRequest request) {
         try {
             HttpHeaders headers = new HttpHeaders();
