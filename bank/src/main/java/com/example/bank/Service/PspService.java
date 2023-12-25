@@ -60,34 +60,15 @@ public class PspService {
         if (isValidMerchant){
             String paymentId = UUID.randomUUID().toString();
             transactionService.createBaseTransaction(paymentDTO, paymentId);
-            //generisanje qr code sa да садржи валуту и износ који се плаћа, број рачуна примаоца, назив
-            //примаоца плаћања итд
-            // {
-            //"K": "PR",
-            // "V": "01",
-            // "C": "1",
-            // broj racun primaoca
-            // "R": "845000000040484987",
-            // adresa primaoca
-            // "N": "JP EPS BEOGRAD\r\nBALKANSKA 13",
-            // valuta i iznos
-            // "I": "RSD3596,13",
-            // adresa platioca
-            // "P": "MRĐO MAČKATOVIĆ\r\nŽUPSKA 13\r\nBEOGRAD 6",
-            // "SF": "189",
-            // "S": "UPLATA PO RAČUNU ZA EL. ENERGIJU",
-            // neki broj,poziv na broj ovo ono
-            // "RO": "97163220000111111111000"
-            //}
             String K = "PR";
             String V = "01";
             String C = "1";
             String R = "12345";
-            String N = "JP EPS BEOGRAD, BALKANSKA 13";
-            String I = "RSD3596,13";
-            String P = "MRĐO MAČKATOVIĆ, ŽUPSKA 13, BEOGRAD 6";
-            String SF = "189";
-            String S = "UPLATA PO RAČUNU ZA EL. ENERGIJU";
+            String N = "Lawly, Balzakova 13";
+            String I = "$"+paymentDTO.getAmount().toString();
+            String P = "Miki Miljkovic, Župska 15, Beograd 11000";
+            String SF = "289";
+            String S = "Transakcije po nalogu građana";
             String RO = "97163220000111111111000";
 
             String jsonData = generateJson(K, V, C, R, N, I, P, SF, S, RO);

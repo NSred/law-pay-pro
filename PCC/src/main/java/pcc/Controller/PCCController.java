@@ -33,6 +33,7 @@ public class PCCController {
     @PostMapping("/toIssuerBankQR")
     public ResponseEntity<PCCResponseQRDTO> redirectToIssuerBank(@RequestBody PCCRequestQRDTO pccRequestQRDTO) {
         try {
+            System.out.println("Stigoh ovde");
             String bankUrl = "http://localhost:8061";
             PCCResponseQRDTO pccResponseQRDTO = bankService.sendToIssuerBankQR(pccRequestQRDTO,bankUrl);
             System.out.println("Recieved from issuer bank response");

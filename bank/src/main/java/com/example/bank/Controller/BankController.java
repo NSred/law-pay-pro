@@ -106,6 +106,7 @@ public class BankController {
                         return ResponseEntity.ok().body(response);
                     }
                 } else {
+                    System.out.println("Eo me ovde");
                     PCCResponseQRDTO pccResponseQRDTO = bankService.sendToPCCQR(qrCodeDTO, transaction, qrCodeRequestDTO.getAccountNumber(), qrCodeRequestDTO.getPaymentId());
                     if (accountService.depositMoneyQR(
                             pccResponseQRDTO.getAcquirerAccountNumber()

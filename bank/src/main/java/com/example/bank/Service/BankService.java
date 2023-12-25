@@ -80,7 +80,7 @@ public class BankService {
     public PCCResponseQRDTO sendToPCCQR(QRCodeDTO qrCodeDTO, Transaction transaction, String accNumber, String paymentId) {
         IdTimestampDTO acquirerOrderIdTS = generateOrderId();
         //From where do I get merhcantId, merchant OrderId and timestamp paymentId
-        String accNumberMerch = accountService.getAccountNumberMerchant(transaction.getMerchant().getId());
+        String accNumberMerch = qrCodeDTO.getR();
         PCCRequestQRDTO pccRequestQRDTO = new PCCRequestQRDTO(
                 accNumber,
                 transaction.getAmount(),
