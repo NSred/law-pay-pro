@@ -1,5 +1,5 @@
 export interface PaymentDto {
-  offerId: number;
+  offerId: string;
   paymentType: PaymentType;
   userId: number;
 }

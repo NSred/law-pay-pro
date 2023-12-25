@@ -1,5 +1,3 @@
-@import "../../../sass/variables";
-
 .wrapper {
   color: var(--text-color);
   display: flex;
@@ -25,12 +23,6 @@
   display: flex;
   padding-bottom: 2rem;
   width: 60%;
-}
-
-.header-small {
-  display: flex;
-  padding-bottom: .5rem;
-  width: 50%;
 }
 
 .payment-method {
@@ -63,6 +55,16 @@ img {
 .button {
   padding-top: 2rem;
   justify-content: flex-end;
+}
+
+.segment {
+  padding-bottom: 1rem;
+}
+
+.divider {
+  padding: 1rem 0 1rem 6rem;
+  align-items: center;
+  justify-content: center;
 }
 
 @media (max-width: 1300px) {

@@ -1,7 +1,10 @@
 package com.lawagency.lawly.services.payments;
 
 import com.lawagency.lawly.dtos.PaymentRequest;
+import com.lawagency.lawly.dtos.responses.GetPayPalSubRequest;
+import com.lawagency.lawly.dtos.responses.GetPayPalSubResponse;
 import com.lawagency.lawly.dtos.responses.PaymentResponse;
+import com.lawagency.lawly.dtos.responses.UpdatePayPalSubRequest;
 import com.lawagency.lawly.external.common.PspPaymentRequest;
 import com.lawagency.lawly.external.httpclient.HttpClientService;
 import com.lawagency.lawly.handler.exceptions.ProccessPaymentException;
@@ -26,5 +29,20 @@ public class PaymentServiceImpl implements PaymentService{
         } catch (Exception e){
             throw new ProccessPaymentException(e.getMessage());
         }
+    }
+
+    @Override
+    public GetPayPalSubResponse getPayPalSub(GetPayPalSubRequest request) {
+        return httpClientService.getPayPalSub(request);
+    }
+
+    @Override
+    public boolean updateSub(UpdatePayPalSubRequest request) {
+        return httpClientService.updateSub(request);
+    }
+
+    @Override
+    public boolean cancelSub(UpdatePayPalSubRequest request) {
+        return httpClientService.cancelSub(request);
     }
 }

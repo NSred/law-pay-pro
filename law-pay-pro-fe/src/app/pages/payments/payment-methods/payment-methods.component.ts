@@ -60,7 +60,7 @@ export class PaymentMethodsComponent implements OnInit{
 
   makePaymentRequest() {
     let request: PaymentDto = {
-      offerId: Number(this.offerId),
+      offerId: this.offerId ? this.offerId : '9cca5e41-39a0-4be9-9d11-c605a32703a4',
       paymentType: PaymentType[this.selectedValue as keyof typeof PaymentType],
       userId: this.user !== null ?  this.user.id : 1//napravi methodu da dobavis ulogovanog usera
     }
@@ -75,12 +75,18 @@ export class PaymentMethodsComponent implements OnInit{
           }).then();
           return;
         }
-        if (request.paymentType === PaymentType.CARD
-          || request.paymentType === PaymentType.PAY_PAL) {
+        if (request.paymentType === PaymentType.PAY_PAL){
+          this.router.navigate(['paypal-payment/' + this.offerId], {
+            queryParams: {
+              paymentUrl: res.paymentUrl
+            }
+          }).then()
+          return;
+        }
+        if (request.paymentType === PaymentType.CARD) {
           this.redirect(res)
           return;
         }
-        console.log(res)
       }
     })
   }

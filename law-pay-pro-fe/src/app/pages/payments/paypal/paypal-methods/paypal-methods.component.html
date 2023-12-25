@@ -1,0 +1,48 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="payment-method">
+      <div class="header">
+        <h2>Choose payment method</h2>
+      </div>
+      <div class="segment">
+        <div class="header-small">
+          <h3>One time payment</h3>
+        </div>
+        <div class="buttons">
+          <div class="button">
+            <app-button
+              [info]="'Confirm payment'"
+              [disabled]="disabled"
+              (click)="makePaymentRequest()"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="divider">
+        <span>OR</span>
+      </div>
+      <div class="segment">
+        <div class="header-small">
+          <h3>Subscribe to basic plan 10$</h3>
+        </div>
+        <div class="buttons">
+          <div class="button" id="paypal-button-container" *ngIf="!payPalSub.subscriptionId"></div>
+          <div class="button" *ngIf="payPalSub.subscriptionId">
+            <app-button
+              [info]="'Cancel subscription'"
+              (click)="cancelSub()"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="buttons">
+        <div class="button">
+          <app-button
+            [info]="'< Back'"
+            (click)="goBackToPaymentMethods()"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -14,11 +14,9 @@ export class SseService {
   constructor(private zone: NgZone) { }
 
   getEventStream(url: string): Observable<PaymentStatusNotify> {
-    console.log('bbbbbb')
     return new Observable(observer => {
       const eventSource = new EventSource(url);
       eventSource.onmessage = event => {
-        console.log('meessage')
         this.zone.run(() => {
           const data: PaymentStatusNotify = JSON.parse(event.data);
           observer.next(data);
