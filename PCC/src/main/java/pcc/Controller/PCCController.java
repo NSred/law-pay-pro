@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pcc.DTO.PCCRequestDTO;
+import pcc.DTO.PCCRequestQRDTO;
 import pcc.DTO.PCCResponseDTO;
+import pcc.DTO.PCCResponseQRDTO;
 import pcc.Service.BankService;
 
 @RestController
@@ -26,6 +28,19 @@ public class PCCController {
           return ResponseEntity.ok(pccResponseDTO);
         } catch (Exception e) {
             return ResponseEntity.status(500).body(new PCCResponseDTO());
+        }
+    }
+    @PostMapping("/toIssuerBankQR")
+    public ResponseEntity<PCCResponseQRDTO> redirectToIssuerBank(@RequestBody PCCRequestQRDTO pccRequestQRDTO) {
+        try {
+            String bankUrl = "http://localhost:8061";
+            PCCResponseQRDTO pccResponseQRDTO = bankService.sendToIssuerBankQR(pccRequestQRDTO,bankUrl);
+            System.out.println("Recieved from issuer bank response");
+            //return bez url banke
+            //bankService.sendToAcquirerBank(pccResponseDTO);
+            return ResponseEntity.ok(pccResponseQRDTO);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(new PCCResponseQRDTO());
         }
     }
 }
