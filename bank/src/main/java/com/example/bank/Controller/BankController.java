@@ -7,7 +7,10 @@ import com.example.bank.Model.Transaction;
 import com.example.bank.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/bank")
@@ -25,6 +28,19 @@ public class BankController {
     private PspService pspService;
     @Autowired
     private QRService qrService;
+
+    @PostMapping("save-card")
+    public ResponseEntity<Void> saveCard(@RequestBody CardDTO dto) throws Exception {
+        var account = accountService.getById(dto.getAccountId());
+        Card card = new Card();
+        card.setAccount(account);
+        card.setCardHolderName(dto.getCardHolderName());
+        card.setPan(dto.getPan());
+        card.setSecurityCode(dto.getSecurityCode());
+        card.setExpirationDate(dto.getExpirationDate());
+        cardService.saveCard(card);
+        return ResponseEntity.ok().build();
+    }
 
     @PostMapping("/pay")
     public ResponseEntity<PSPResponseDTO> transferMoney(@RequestBody CardTransactionRequestDTO cardTransactionRequestDTO) {

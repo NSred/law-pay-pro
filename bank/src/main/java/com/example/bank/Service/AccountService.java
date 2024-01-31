@@ -18,6 +18,9 @@ public class AccountService {
         this.accountRepository = accountRepository;
     }
 
+    public Account getById(Long id){
+        return accountRepository.findById(id).orElse(null);
+    }
     public String getAccountNumberMerchant(Long merchantId){
         Account account = accountRepository.findAccountByMerchantId(merchantId).orElse(null);
         return account.getAccountNumber();

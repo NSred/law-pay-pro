@@ -1,9 +1,10 @@
 package com.example.bank.Model;
+import java.io.Serializable;
 import java.util.List;
 import jakarta.persistence.*;
 
 @Entity
-public class Card {
+public class Card implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
